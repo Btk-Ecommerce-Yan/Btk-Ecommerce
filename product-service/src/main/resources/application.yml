@@ -1,0 +1,16 @@
+server:
+  port: 9092
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: e-commerce
+      username: Java
+      password: root
+      auto-index-creation: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: java
+    password: root

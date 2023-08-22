@@ -17,4 +17,5 @@ public class Order extends Base {
     private String orderId;
     private String basketId;
     private String balanceId;
+    private String orderNumber;
 }

@@ -45,7 +45,7 @@ public class ProductController {
     }
 
     @GetMapping(PRODUCT_SEARCH_WITH_CATEGORY_NAME + "/{categoryName}")
-    public ResponseEntity<SearchProductResponseDto> searchProductWithCategoryName(@PathVariable String categoryName) {
+    public ResponseEntity<List<SearchProductResponseDto>> searchProductWithCategoryName(@PathVariable String categoryName) {
         return ResponseEntity.ok(productService.searchProductWithCategoryName(categoryName));
     }
 

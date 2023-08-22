@@ -17,4 +17,6 @@ public interface IProductMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Product updateFromDtoToProduct(final ProductUpdateRequestDto dto, @MappingTarget Product product);
     ProductUpdateResponseDto toUpdateDtoFromProduct(final Product product);
+
+
 }

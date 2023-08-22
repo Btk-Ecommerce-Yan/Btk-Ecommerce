@@ -92,7 +92,9 @@ public class ProductService extends ServiceManager<Product, String> {
                 .collect(Collectors.toList());
 
         Brand brand = brandService.findById(product.getBrandId()).orElseThrow(() -> new ProductManagerException(ErrorType.BRAND_NOT_FOUND));
-
+        /*
+        Brand ve Category servislerinden data geldiği için mapper yapsakta build işlemine veya set işlemine ihtiyaç duyacaktık. Bu yüzden hepsini builder ile yönettik.
+         */
         ProductDetailsResponseDto productDetailsResponseDto = ProductDetailsResponseDto.builder()
                 .productName(product.getProductName())
                 .brandName(brand.getBrandName())
@@ -105,15 +107,17 @@ public class ProductService extends ServiceManager<Product, String> {
         return productDetailsResponseDto;
     }
 
-    //TODO product repo sorgusunda bir problem var, categoryId list tutulduğu için sorgu şu an doğru atılmıyor, düzeltilecek
-    public SearchProductResponseDto searchProductWithCategoryName(String categoryName) {
+    public List<SearchProductResponseDto> searchProductWithCategoryName(String categoryName) {
         Category category = categoryService.getCategoryWithCategoryName(categoryName);
-        Product product = productRepository.findProductByCategoryIds(category.getCategoryId()).orElseThrow(() -> new ProductManagerException(ErrorType.PRODUCT_NOT_FOUND));
-        SearchProductResponseDto searchProductResponseDto = SearchProductResponseDto.builder()
-                .productName(product.getProductName())
-                .price(product.getPrice())
-                .photoImages(product.getPhotoImages())
-                .build();
+        List<Product> products = productRepository.findProductByCategoryIdsContains(category.getCategoryId());
+        List<SearchProductResponseDto> searchProductResponseDto = products.stream().map(product -> {
+            SearchProductResponseDto dto = SearchProductResponseDto.builder()
+                    .productName(product.getProductName())
+                    .photoImages(product.getPhotoImages())
+                    .price(product.getPrice())
+                    .build();
+            return dto;
+        }).collect(Collectors.toList());
         return searchProductResponseDto;
     }
     public Double getPriceByProductId(String productId){

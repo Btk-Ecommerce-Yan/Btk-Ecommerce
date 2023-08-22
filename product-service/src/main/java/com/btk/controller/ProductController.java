@@ -19,19 +19,19 @@ import static com.btk.constant.ApiUrls.*;
 public class ProductController {
     private final ProductService productService;
 
-    @PostMapping("")
-    public ResponseEntity<ProductSaveResponseDto> save(@RequestBody ProductSaveRequestDto dto){
-        return ResponseEntity.ok(productService.save(dto));
+    @PostMapping(SAVE_PRODUCT + "/{token}")
+    public ResponseEntity<ProductSaveResponseDto> save(@RequestBody ProductSaveRequestDto dto, @PathVariable String token){
+        return ResponseEntity.ok(productService.save(dto,token));
     }
 
-    @PutMapping("")
-    public ResponseEntity<ProductUpdateResponseDto> update(@RequestBody ProductUpdateRequestDto dto){
-        return ResponseEntity.ok(productService.update(dto));
+    @PutMapping(UPDATE_PRODUCT + "/{token}")
+    public ResponseEntity<ProductUpdateResponseDto> update(@RequestBody ProductUpdateRequestDto dto, @PathVariable String token){
+        return ResponseEntity.ok(productService.update(dto,token));
     }
 
-    @DeleteMapping(DELETED_PRODUCT)
-    public ResponseEntity<Boolean> delete(@PathVariable String productId){
-        return ResponseEntity.ok(productService.delete(productId));
+    @DeleteMapping(DELETED_PRODUCT + "/{token}")
+    public ResponseEntity<Boolean> delete(@PathVariable String productId, @PathVariable String token){
+        return ResponseEntity.ok(productService.delete(productId,token));
     }
 
     @GetMapping(PRODUCT_DETAILS + "/{productId}")

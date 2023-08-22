@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.btk.constant.ApiUrls.*;
 
 @RestController
@@ -20,7 +22,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping(SAVE_PRODUCT + "/{token}")
-    public ResponseEntity<ProductSaveResponseDto> save(@RequestBody ProductSaveRequestDto dto, @PathVariable String token){
+    public ResponseEntity<ProductSaveResponseDto> save(@RequestBody @Valid ProductSaveRequestDto dto, @PathVariable String token){
         return ResponseEntity.ok(productService.save(dto,token));
     }
 

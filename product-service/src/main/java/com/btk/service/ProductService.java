@@ -38,7 +38,7 @@ public class ProductService extends ServiceManager<Product, String> {
 
     public ProductSaveResponseDto save(ProductSaveRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
-        if (roles.contains(ERole.SITE_MANAGER)) {
+        if (roles.contains(ERole.SITE_MANAGER.toString())) {
             Product product = IProductMapper.INSTANCE.toProductFromSaveDto(dto);
         /*
         allMatch() --> product "categoryIds" içerisinde "dto' dan" gönderilen "id' ler" eşleşiyorsa(yani tüm durumlar true ise) true döndür,
@@ -46,7 +46,7 @@ public class ProductService extends ServiceManager<Product, String> {
          */
             boolean status = product.getCategoryIds().stream().allMatch(categoryId -> categoryService.existByCategoryId(categoryId));
             if (brandService.existByBrandId(product.getBrandId()) && status) {
-                productRepository.save(product);
+                save(product);
                 return IProductMapper.INSTANCE.toSaveDtoFromProduct(product);
             }
             throw new ProductManagerException(ErrorType.BRAND_AND_CATEGORY_NOT_FOUND);

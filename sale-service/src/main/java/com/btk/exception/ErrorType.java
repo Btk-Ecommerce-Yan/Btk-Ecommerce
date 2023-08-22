@@ -27,6 +27,7 @@ public enum ErrorType {
     COMPANY_SUBSCRIPTION_EXIST(5400,"Company'nin subscription işlemleri önceden yapılmıştır", HttpStatus.BAD_REQUEST),
     INVALID_TOKEN(5500,"Geçersiz token bilgisi",HttpStatus.BAD_REQUEST),
     INVALID_ROLE(5600,"Bu işleme erişim yetkiniz bulunmamaktadır",HttpStatus.BAD_REQUEST),
+    BALANCE_EXIST_ERROR(5700,"Daha önce cüzdanınız bulunmaktadır",HttpStatus.BAD_REQUEST),
     ;
 
 

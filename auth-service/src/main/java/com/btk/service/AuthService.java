@@ -10,6 +10,7 @@ import com.btk.entity.enums.ERole;
 import com.btk.entity.enums.EStatus;
 import com.btk.exception.AuthManagerException;
 import com.btk.exception.ErrorType;
+import com.btk.manager.ISaleManager;
 import com.btk.manager.IUserProfileManager;
 import com.btk.mapper.IAuthMapper;
 import com.btk.repository.IAuthRepository;
@@ -30,13 +31,15 @@ public class AuthService extends ServiceManager<Auth, Long> {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final IUserProfileManager userProfileManager;
+    private final ISaleManager saleManager;
 
-    public AuthService(IAuthRepository authRepository, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder, IUserProfileManager userProfileManager) {
+    public AuthService(IAuthRepository authRepository, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder, IUserProfileManager userProfileManager, ISaleManager saleManager) {
         super(authRepository);
         this.authRepository = authRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
         this.userProfileManager = userProfileManager;
+        this.saleManager = saleManager;
     }
 
     public String registerUser(RegisterUserRequestDto dto) {
@@ -50,6 +53,9 @@ public class AuthService extends ServiceManager<Auth, Long> {
             auth.setActivationCode(CodeGenerator.generateCode());
             save(auth);
             userProfileManager.createUser(IAuthMapper.INSTANCE.fromAuthNewCreateUserRequestDto(auth));
+            //String token= jwtTokenProvider.createToken(optionalAuth.get().getAuthId()).get();
+            // Balance oluşturmak için yapılan method
+            saleManager.createBalance(auth.getAuthId());
         } else {
             throw new AuthManagerException(ErrorType.PASSWORD_ERROR);
         }

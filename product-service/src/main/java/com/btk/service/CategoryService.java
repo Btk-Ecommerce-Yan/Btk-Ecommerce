@@ -27,9 +27,7 @@ public class CategoryService extends ServiceManager<Category, String> {
 
     public Boolean save(String categoryName, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
-        System.out.println(roles);
         roles.forEach(role -> {
-            System.out.println(role);
             if (role.contains(ERole.ADMIN.toString())) {
                 Category category = Category.builder()
                         .categoryName(categoryName).build();
@@ -55,6 +53,8 @@ public class CategoryService extends ServiceManager<Category, String> {
         });
         return true;
     }
+
+    //TODO kategori silme işlemi yapılacak
 
     public Boolean existByCategoryId(String categoryId) {
         return categoryRepository.existsById(categoryId);

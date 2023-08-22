@@ -10,4 +10,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface IUserManager {
     @GetMapping("/find-by-auth-id/{authId}")
     public ResponseEntity<String> findByAuthId(@PathVariable Long authId);
+
 }

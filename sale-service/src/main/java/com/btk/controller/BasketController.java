@@ -1,6 +1,7 @@
 package com.btk.controller;
 
 import com.btk.dto.request.AddProductToBasketRequestDto;
+import com.btk.dto.request.TotalPriceRequestDto;
 import com.btk.service.BasketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,4 +20,8 @@ public class BasketController {
     public ResponseEntity<Boolean> addProductToBasket(@PathVariable String token, @RequestBody AddProductToBasketRequestDto dto){
         return ResponseEntity.ok(basketService.addProductToBasket(token,dto));
     }
-}
+    @PostMapping("/total-price-in-basket/{token}")
+    public ResponseEntity<Double> totalPriceInBasket(@PathVariable String token,@RequestBody TotalPriceRequestDto dto) {
+        return ResponseEntity.ok(basketService.totalPriceInBasket(token, dto));
+    }
+    }

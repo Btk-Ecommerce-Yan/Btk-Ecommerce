@@ -38,6 +38,7 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileService.changePassword(dto));
     }
 
+    @Hidden
     @GetMapping("/find-by-auth-id/{authId}")
     public ResponseEntity<String> findByAuthId(@PathVariable Long authId){
         return ResponseEntity.ok(userProfileService.findByAuthId(authId));

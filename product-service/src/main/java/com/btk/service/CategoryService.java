@@ -59,4 +59,8 @@ public class CategoryService extends ServiceManager<Category, String> {
     public Boolean existByCategoryId(String categoryId) {
         return categoryRepository.existsById(categoryId);
     }
+
+    public Category getCategoryWithCategoryName(String categoryName){
+        return categoryRepository.findCategoryByCategoryNameContainingIgnoreCase(categoryName).orElseThrow(() -> new ProductManagerException(ErrorType.CATEGORY_NOT_FOUND));
+    }
 }

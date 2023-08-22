@@ -2,8 +2,10 @@ package com.btk.controller;
 
 import com.btk.dto.request.ProductSaveRequestDto;
 import com.btk.dto.request.ProductUpdateRequestDto;
+import com.btk.dto.response.ProductDetailsResponseDto;
 import com.btk.dto.response.ProductSaveResponseDto;
 import com.btk.dto.response.ProductUpdateResponseDto;
+import com.btk.dto.response.SearchProductResponseDto;
 import com.btk.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +32,15 @@ public class ProductController {
     @DeleteMapping(DELETED_PRODUCT)
     public ResponseEntity<Boolean> delete(@PathVariable String productId){
         return ResponseEntity.ok(productService.delete(productId));
+    }
+
+    @GetMapping(PRODUCT_DETAILS + "/{productId}")
+    public ResponseEntity<ProductDetailsResponseDto> productDetails(@PathVariable String productId){
+        return ResponseEntity.ok(productService.productDetails(productId));
+    }
+
+    @GetMapping(PRODUCT_SEARCH_WITH_CATEGORY_NAME + "/{categoryName}")
+    public ResponseEntity<SearchProductResponseDto> searchProductWithCategoryName(@PathVariable String categoryName){
+        return ResponseEntity.ok(productService.searchProductWithCategoryName(categoryName));
     }
 }

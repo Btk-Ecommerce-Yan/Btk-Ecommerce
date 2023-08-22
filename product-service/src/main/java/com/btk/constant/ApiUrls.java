@@ -8,5 +8,7 @@ public class ApiUrls {
     public static final String BRAND = VERSION + "/brand";
 
     public static final String DELETED_PRODUCT = "/{productId}";
+    public static final String PRODUCT_DETAILS = "/product-details";
+    public static final String PRODUCT_SEARCH_WITH_CATEGORY_NAME = "/product-search-with-category-name";
 
 }

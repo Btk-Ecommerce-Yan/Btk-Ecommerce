@@ -20,6 +20,7 @@ public class Product extends Base {
     private String productName;
     private Double price;
     private String description;
+    private String stock;
     private List<String> categoryIds;
     private String brandId;
     private List<String> photoImages;

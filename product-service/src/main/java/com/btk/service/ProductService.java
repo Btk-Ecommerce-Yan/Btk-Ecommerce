@@ -9,10 +9,12 @@ import com.btk.dto.response.SearchProductResponseDto;
 import com.btk.entity.Brand;
 import com.btk.entity.Category;
 import com.btk.entity.Product;
+import com.btk.entity.enums.ERole;
 import com.btk.exception.ErrorType;
 import com.btk.exception.ProductManagerException;
 import com.btk.mapper.IProductMapper;
 import com.btk.repository.IProductRepository;
+import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
 import org.springframework.stereotype.Service;
 
@@ -24,46 +26,62 @@ public class ProductService extends ServiceManager<Product, String> {
     private final IProductRepository productRepository;
     private final BrandService brandService;
     private final CategoryService categoryService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public ProductService(IProductRepository productRepository, BrandService brandService, CategoryService categoryService) {
+    public ProductService(IProductRepository productRepository, BrandService brandService, CategoryService categoryService, JwtTokenProvider jwtTokenProvider) {
         super(productRepository);
         this.productRepository = productRepository;
         this.brandService = brandService;
         this.categoryService = categoryService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public ProductSaveResponseDto save(ProductSaveRequestDto dto){
-        Product product = IProductMapper.INSTANCE.toProductFromSaveDto(dto);
-
+    public ProductSaveResponseDto save(ProductSaveRequestDto dto, String token) {
+        List<String> roles = jwtTokenProvider.getRoleFromToken(token);
+        if (roles.contains(ERole.SITE_MANAGER)) {
+            Product product = IProductMapper.INSTANCE.toProductFromSaveDto(dto);
         /*
         allMatch() --> product "categoryIds" içerisinde "dto' dan" gönderilen "id' ler" eşleşiyorsa(yani tüm durumlar true ise) true döndür,
                        eşleşmeyen herhangi bir durumda false döndür.
          */
-        boolean status = product.getCategoryIds().stream().allMatch(categoryId -> categoryService.existByCategoryId(categoryId));
-        if (brandService.existByBrandId(product.getBrandId()) && status) {
-            productRepository.save(product);
-            return IProductMapper.INSTANCE.toSaveDtoFromProduct(product);
+            boolean status = product.getCategoryIds().stream().allMatch(categoryId -> categoryService.existByCategoryId(categoryId));
+            if (brandService.existByBrandId(product.getBrandId()) && status) {
+                productRepository.save(product);
+                return IProductMapper.INSTANCE.toSaveDtoFromProduct(product);
+            }
+            throw new ProductManagerException(ErrorType.BRAND_AND_CATEGORY_NOT_FOUND);
+        } else {
+            throw new ProductManagerException(ErrorType.NOT_AUTHORIZED);
         }
-        throw new ProductManagerException(ErrorType.BRAND_AND_CATEGORY_NOT_FOUND);
     }
 
-    public ProductUpdateResponseDto update(ProductUpdateRequestDto dto){
-        Product product = productRepository.findById(dto.getProductId()).orElseThrow(() -> new ProductManagerException(ErrorType.PRODUCT_NOT_FOUND));
-        boolean status = product.getCategoryIds().stream().allMatch(categoryId -> categoryService.existByCategoryId(categoryId));
+    public ProductUpdateResponseDto update(ProductUpdateRequestDto dto, String token) {
+        List<String> roles = jwtTokenProvider.getRoleFromToken(token);
+        if (roles.contains(ERole.SITE_MANAGER.toString())) {
+            Product product = productRepository.findById(dto.getProductId()).orElseThrow(() -> new ProductManagerException(ErrorType.PRODUCT_NOT_FOUND));
+            boolean status = product.getCategoryIds().stream().allMatch(categoryId -> categoryService.existByCategoryId(categoryId));
 
-        if (brandService.existByBrandId(product.getBrandId()) && status) {
-            update(IProductMapper.INSTANCE.updateFromDtoToProduct(dto, product));
-            return IProductMapper.INSTANCE.toUpdateDtoFromProduct(product);
+            if (brandService.existByBrandId(product.getBrandId()) && status) {
+                update(IProductMapper.INSTANCE.updateFromDtoToProduct(dto, product));
+                return IProductMapper.INSTANCE.toUpdateDtoFromProduct(product);
+            }
+            throw new ProductManagerException(ErrorType.BRAND_AND_CATEGORY_NOT_FOUND);
+        } else {
+            throw new ProductManagerException(ErrorType.NOT_AUTHORIZED);
         }
-        throw new ProductManagerException(ErrorType.BRAND_AND_CATEGORY_NOT_FOUND);
     }
 
-    public Boolean delete(String productId){
-        productRepository.deleteById(productId);
-        return true;
+    public Boolean delete(String productId, String token) {
+        List<String> roles = jwtTokenProvider.getRoleFromToken(token);
+        if (roles.contains(ERole.SITE_MANAGER.toString())) {
+            productRepository.deleteById(productId);
+            return true;
+        } else {
+            throw new ProductManagerException(ErrorType.NOT_AUTHORIZED);
+        }
     }
 
-    public ProductDetailsResponseDto productDetails(String productId){
+    public ProductDetailsResponseDto productDetails(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductManagerException(ErrorType.PRODUCT_NOT_FOUND));
 
         List<String> categoryNames = product.getCategoryIds().stream()
@@ -86,7 +104,7 @@ public class ProductService extends ServiceManager<Product, String> {
     }
 
     //TODO product repo sorgusunda bir problem var, categoryId list tutulduğu için sorgu şu an doğru atılmıyor, düzeltilecek
-    public SearchProductResponseDto searchProductWithCategoryName(String categoryName){
+    public SearchProductResponseDto searchProductWithCategoryName(String categoryName) {
         Category category = categoryService.getCategoryWithCategoryName(categoryName);
         Product product = productRepository.findProductByCategoryIds(category.getCategoryId()).orElseThrow(() -> new ProductManagerException(ErrorType.PRODUCT_NOT_FOUND));
         SearchProductResponseDto searchProductResponseDto = SearchProductResponseDto.builder()

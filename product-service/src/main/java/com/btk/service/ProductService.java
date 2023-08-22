@@ -116,6 +116,9 @@ public class ProductService extends ServiceManager<Product, String> {
                 .build();
         return searchProductResponseDto;
     }
+    public Double getPriceByProductId(String productId){
+        return productRepository.findById(productId).get().getPrice();
+    }
 
     public List<SearchProductResponseDto> searchProductWithProductName(String productName) {
         List<Product> products = productRepository.findProductByProductNameContainsIgnoreCase(productName);

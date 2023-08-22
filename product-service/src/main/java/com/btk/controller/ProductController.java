@@ -60,4 +60,11 @@ public class ProductController {
     public ResponseEntity<List<SearchProductResponseDto>> searchProductWithProductPrice(@RequestParam(required = false) Double minPrice, @RequestParam(required = false) Double maxPrice) {
         return ResponseEntity.ok(productService.searchProductWithProductPrice(minPrice, maxPrice));
     }
+
+    @GetMapping("/get-by-product-id/{productId}")
+    public ResponseEntity<Double> getPriceByProductId(@PathVariable String productId){
+        return ResponseEntity.ok(productService.getPriceByProductId(productId));
+    }
+
+
 }

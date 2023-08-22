@@ -7,7 +7,7 @@ public class ApiUrls {
 
     //UserProfile EndPoints
     public static final String CREATE = "/create";
-    public static final String CREATE_PERSONAL = "/create-personal";
+    public static final String CREATE_USER = "/create-user";
     public static final String PASS_CHANGE = "/password-change";
     public static final String UPDATE = "/update";
     public static final String DELETE_BY_ID = "/delete-by-id";
@@ -15,5 +15,4 @@ public class ApiUrls {
     public static final String FIND_ALL = "/find-all";
     public static final String ACTIVATE_STATUS = "/activate-status";
     public static final String FORGOT_PASSWORD = "/forgot-password";
-    public static final String ADMINCHANGEVISITORSTATUS = "/adminchangevisitorstatus";
 }

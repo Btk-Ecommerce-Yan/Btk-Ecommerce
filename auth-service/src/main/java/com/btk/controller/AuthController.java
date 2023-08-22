@@ -41,7 +41,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.forgotPassword(email));
     }
     @Hidden
-    @PutMapping("/password-change")
+    @PutMapping(PASSWORD_CHANGE)
     ResponseEntity<Boolean> changePassword(@RequestBody ToAuthPasswordChangeDto dto) {
         return ResponseEntity.ok(authService.changePassword(dto));
     }

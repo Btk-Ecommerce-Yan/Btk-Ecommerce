@@ -18,21 +18,21 @@ public class UserProfileController {
     private final UserProfileService userProfileService;
 
     @Hidden
-    @PostMapping("/create-user")
+    @PostMapping(CREATE_USER)
     public ResponseEntity<Boolean> createVisitorUser(@RequestBody NewCreateUserResponseDto dto) {
         return ResponseEntity.ok(userProfileService.createUser(dto));
     }
     @Hidden
-    @PutMapping("/activate-status/{authId}")
+    @PutMapping(ACTIVATE_STATUS + "/{authId}")
     public ResponseEntity<Boolean> activateStatus(@PathVariable Long authId) {
         return ResponseEntity.ok(userProfileService.activateStatus(authId));
     }
     @Hidden
-    @PutMapping("/forgot-password")
+    @PutMapping(FORGOT_PASSWORD)
     public ResponseEntity<Boolean> forgotPassword(@RequestBody ForgotPasswordUserResponseDto dto) {
         return ResponseEntity.ok(userProfileService.forgotPassword(dto));
     }
-    @PutMapping("/change-password")
+    @PutMapping(PASS_CHANGE)
     public ResponseEntity<String> changePassword(@RequestBody UserChangePasswordRequestDto dto) {
         return ResponseEntity.ok(userProfileService.changePassword(dto));
     }

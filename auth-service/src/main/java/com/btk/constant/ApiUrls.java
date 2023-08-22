@@ -7,7 +7,7 @@ public class ApiUrls {
 
     //AuthController
     public static final String REGISTER_USER = "/register-user";
-    public static final String REGISTER_MANAGER = "/register-manager";
+    public static final String REGISTER_SITE_MANAGER = "/register-site-manager/{token}";
     public static final String LOGIN = "/login";
     public static final String UPDATE = "/update";
     public static final String DELETE_BY_ID = "/delete-by-id";

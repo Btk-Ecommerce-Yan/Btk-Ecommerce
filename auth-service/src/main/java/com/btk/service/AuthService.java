@@ -61,6 +61,25 @@ public class AuthService extends ServiceManager<Auth, Long> {
         }
         return "Hesabınızı aktif edeceğiniz aktivasyon kodunuz: " + auth.getActivationCode();
     }
+    //TODO Metod test edilmedi.
+    public String registerSiteManager(RegisterUserRequestDto dto, String token) {
+        List<String> roles = jwtTokenProvider.getRoleFromToken(token);
+        Auth auth = IAuthMapper.INSTANCE.fromUserRequestDtoToAuth(dto);
+        if (roles.contains(ERole.ADMIN.toString())) {
+            Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
+            if (!optionalAuth.isEmpty())
+                throw new AuthManagerException(ErrorType.DUPLICATE_USER);
+            auth.setRoles(List.of(ERole.SITE_MANAGER));
+            if (dto.getPassword().equals(dto.getRepassword())) {
+                auth.setPassword(passwordEncoder.encode(dto.getPassword()));
+                auth.setActivationCode(CodeGenerator.generateCode());
+                save(auth);
+            }
+        } else {
+            throw new AuthManagerException(ErrorType.NOT_AUTHORIZED);
+        }
+        return "Hesabınızı aktif edeceğiniz aktivasyon kodunuz: " + auth.getActivationCode();
+    }
 
     public String activateStatus(ActivateRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());

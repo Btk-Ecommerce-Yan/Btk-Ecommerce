@@ -2,6 +2,7 @@ package com.btk.entity;
 
 import com.btk.entity.enums.EStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -21,5 +22,6 @@ public class Basket extends Base {
     private String userId;
     private List<String> productIds; //?
     //private Double totalPrice; //Şuanlık yorumda kalsın.
+    @Builder.Default
     private EStatus status = EStatus.ACTIVE;
 }

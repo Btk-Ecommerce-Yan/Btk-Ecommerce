@@ -3,6 +3,7 @@ package com.btk.controller;
 import com.btk.dto.request.UserChangePasswordRequestDto;
 import com.btk.dto.response.ForgotPasswordUserResponseDto;
 import com.btk.dto.response.NewCreateUserResponseDto;
+import com.btk.dto.response.UserProfileResponseDto;
 import com.btk.service.UserProfileService;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
@@ -36,4 +37,10 @@ public class UserProfileController {
     public ResponseEntity<String> changePassword(@RequestBody UserChangePasswordRequestDto dto) {
         return ResponseEntity.ok(userProfileService.changePassword(dto));
     }
+
+    @GetMapping("/find-by-auth-id/{authId}")
+    public ResponseEntity<String> findByAuthId(@PathVariable Long authId){
+        return ResponseEntity.ok(userProfileService.findByAuthId(authId));
+    }
+
 }

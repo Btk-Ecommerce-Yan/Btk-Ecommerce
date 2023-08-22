@@ -3,6 +3,7 @@ package com.btk.service;
 import com.btk.dto.request.UserChangePasswordRequestDto;
 import com.btk.dto.response.ForgotPasswordUserResponseDto;
 import com.btk.dto.response.NewCreateUserResponseDto;
+import com.btk.dto.response.UserProfileResponseDto;
 import com.btk.entity.UserProfile;
 import com.btk.entity.enums.ERole;
 import com.btk.entity.enums.EStatus;
@@ -86,5 +87,8 @@ public class UserProfileService extends ServiceManager<UserProfile,String> {
         return dto.getNewPassword();
     }
 
+    public String findByAuthId(Long authId) {
+        return userRepository.findByAuthId(authId).get().getUserId();
+    }
 
 }

@@ -1,0 +1,9 @@
+package com.btk.repository;
+
+import com.btk.entity.Order;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface IOrderRepository extends MongoRepository<Order,String> {
+}

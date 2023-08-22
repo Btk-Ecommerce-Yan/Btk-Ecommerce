@@ -38,7 +38,7 @@ public class ProductService extends ServiceManager<Product, String> {
 
     public ProductSaveResponseDto save(ProductSaveRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
-        if (roles.contains(ERole.SITE_MANAGER)) {
+        if (roles.contains(ERole.SITE_MANAGER.toString())) {
             Product product = IProductMapper.INSTANCE.toProductFromSaveDto(dto);
         /*
         allMatch() --> product "categoryIds" içerisinde "dto' dan" gönderilen "id' ler" eşleşiyorsa(yani tüm durumlar true ise) true döndür,
@@ -113,6 +113,9 @@ public class ProductService extends ServiceManager<Product, String> {
                 .photoImages(product.getPhotoImages())
                 .build();
         return searchProductResponseDto;
+    }
+    public Double getPriceByProductId(String productId){
+        return productRepository.findById(productId).get().getPrice();
     }
 
 }

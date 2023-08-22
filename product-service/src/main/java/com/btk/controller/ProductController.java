@@ -43,4 +43,9 @@ public class ProductController {
     public ResponseEntity<SearchProductResponseDto> searchProductWithCategoryName(@PathVariable String categoryName){
         return ResponseEntity.ok(productService.searchProductWithCategoryName(categoryName));
     }
+    @GetMapping("/find-by-product-id/{productId}")
+    public ResponseEntity<Double> findPriceByProductId(@PathVariable String productId){
+        return ResponseEntity.ok(productService.getPriceByProductId(productId));
+    }
+
 }

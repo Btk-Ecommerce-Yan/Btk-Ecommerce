@@ -1,6 +1,7 @@
 package com.btk.mapper;
 
 import com.btk.dto.request.AddProductToBasketRequestDto;
+import com.btk.dto.request.UpdateBasketRequestDto;
 import com.btk.entity.Basket;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

@@ -1,11 +1,16 @@
 package com.btk.controller;
 
 import com.btk.dto.request.AddProductToBasketRequestDto;
+import com.btk.dto.request.DeleteProductFromBasketRequestDto;
 import com.btk.dto.request.TotalPriceRequestDto;
+import com.btk.dto.request.UpdateBasketRequestDto;
+import com.btk.entity.Basket;
 import com.btk.service.BasketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.btk.constant.ApiUrls.*;
 
@@ -17,11 +22,26 @@ public class BasketController {
 
 
     @PostMapping("/add-product-to-basket/{token}")
-    public ResponseEntity<Boolean> addProductToBasket(@PathVariable String token, @RequestBody AddProductToBasketRequestDto dto){
-        return ResponseEntity.ok(basketService.addProductToBasket(token,dto));
+    public ResponseEntity<Boolean> addProductToBasket(@PathVariable String token, @RequestBody AddProductToBasketRequestDto dto) {
+        return ResponseEntity.ok(basketService.addProductToBasket(token, dto));
     }
+
     @PostMapping("/total-price-in-basket/{token}")
-    public ResponseEntity<Double> totalPriceInBasket(@PathVariable String token,@RequestBody TotalPriceRequestDto dto) {
+    public ResponseEntity<Double> totalPriceInBasket(@PathVariable String token, @RequestBody TotalPriceRequestDto dto) {
         return ResponseEntity.ok(basketService.totalPriceInBasket(token, dto));
     }
+
+    @GetMapping("/find-all")
+    public ResponseEntity<List<Basket>> findAll() {
+        return ResponseEntity.ok(basketService.findAll());
     }
+
+    @PostMapping("/update-basket/{token}")
+    public ResponseEntity<Basket> updateBasket(@PathVariable String token, @RequestBody UpdateBasketRequestDto dto) {
+        return ResponseEntity.ok(basketService.updateBasket(token, dto));
+    }
+    @PostMapping("/delete-product-from-basket/{token}")
+    public ResponseEntity<Basket> deleteProductFromBasket(@PathVariable String token, @RequestBody DeleteProductFromBasketRequestDto dto) {
+        return ResponseEntity.ok(basketService.deleteProductFromBasket(token, dto));
+    }
+}

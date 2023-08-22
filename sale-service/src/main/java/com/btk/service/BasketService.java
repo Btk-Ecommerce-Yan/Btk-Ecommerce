@@ -1,7 +1,9 @@
 package com.btk.service;
 
 import com.btk.dto.request.AddProductToBasketRequestDto;
+import com.btk.dto.request.DeleteProductFromBasketRequestDto;
 import com.btk.dto.request.TotalPriceRequestDto;
+import com.btk.dto.request.UpdateBasketRequestDto;
 import com.btk.entity.Basket;
 import com.btk.entity.enums.ERole;
 import com.btk.exception.ErrorType;
@@ -70,6 +72,39 @@ public class BasketService extends ServiceManager<Basket, String> {
             return totalPrice;
         }
         return 0.0;
+    }
+    public Basket updateBasket(String token, UpdateBasketRequestDto dto){
+        Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
+        if (authId.isEmpty()) {
+            throw new SaleManagerException(ErrorType.INVALID_TOKEN);
+        }
+        List<String> roles = jwtTokenProvider.getRoleFromToken(token);
+        if (roles.contains(ERole.USER.toString())) {
+            Basket basket=findById(dto.getBasketId()).get();
+            List<String> newProductIds = dto.getProductIds();
+            basket.getProductIds().addAll(newProductIds);
+            update(basket);
+            return basket;
+        } else {
+            throw new SaleManagerException(ErrorType.INVALID_ROLE);
+        }
+        }
+
+    public Basket deleteProductFromBasket(String token, DeleteProductFromBasketRequestDto dto){
+        Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
+        if (authId.isEmpty()) {
+            throw new SaleManagerException(ErrorType.INVALID_TOKEN);
+        }
+        List<String> roles = jwtTokenProvider.getRoleFromToken(token);
+        if (roles.contains(ERole.USER.toString())) {
+            Basket basket = findById(dto.getBasketId()).get();
+            basket.getProductIds().removeAll(dto.getProductIds());
+            update(basket);
+            return basket;
+        }
+        else {
+            throw new SaleManagerException(ErrorType.INVALID_ROLE);
+        }
     }
 
 

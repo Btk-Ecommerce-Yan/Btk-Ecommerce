@@ -18,7 +18,9 @@ import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -112,6 +114,36 @@ public class ProductService extends ServiceManager<Product, String> {
                 .price(product.getPrice())
                 .photoImages(product.getPhotoImages())
                 .build();
+        return searchProductResponseDto;
+    }
+
+    public List<SearchProductResponseDto> searchProductWithProductName(String productName) {
+        List<Product> products = productRepository.findProductByProductNameContainsIgnoreCase(productName);
+        List<SearchProductResponseDto> searchProductResponseDto = products.stream().map(product -> {
+            SearchProductResponseDto dto = SearchProductResponseDto.builder()
+                    .productName(product.getProductName())
+                    .photoImages(product.getPhotoImages())
+                    .price(product.getPrice())
+                    .build();
+            return dto;
+        }).collect(Collectors.toList());
+        return searchProductResponseDto;
+    }
+
+    public List<SearchProductResponseDto> searchProductWithProductPrice(Double minPrice, Double maxPrice) {
+        List<Product> products;
+        if (minPrice == null) products = productRepository.findByPriceLessThanEqual(maxPrice);
+        else if (maxPrice == null) products = productRepository.findByPriceGreaterThanEqual(minPrice);
+        else products = productRepository.findProductByPriceBetween(minPrice, maxPrice);
+
+        List<SearchProductResponseDto> searchProductResponseDto = products.stream().map(product -> {
+            SearchProductResponseDto dto = SearchProductResponseDto.builder()
+                    .productName(product.getProductName())
+                    .photoImages(product.getPhotoImages())
+                    .price(product.getPrice())
+                    .build();
+            return dto;
+        }).collect(Collectors.toList());
         return searchProductResponseDto;
     }
 

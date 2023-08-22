@@ -11,5 +11,7 @@ public class ApiUrls {
     public static final String DELETED_PRODUCT = "/{productId}";
     public static final String PRODUCT_DETAILS = "/product-details";
     public static final String PRODUCT_SEARCH_WITH_CATEGORY_NAME = "/product-search-with-category-name";
+    public static final String PRODUCT_SEARCH_WITH_PRODUCT_NAME = "/product-search-with-product-name";
+    public static final String PRODUCT_SEARCH_WITH_PRICE = "/product-search-with-price";
 
 }

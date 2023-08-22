@@ -10,4 +10,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface IAuthManager {
     @PutMapping("/password-change")
     ResponseEntity<Boolean> changePassword(@RequestBody ToAuthPasswordChangeDto dto);
+
 }

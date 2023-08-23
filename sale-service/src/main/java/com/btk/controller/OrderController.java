@@ -1,6 +1,5 @@
 package com.btk.controller;
 
-import com.btk.dto.request.CreateOrderRequestDto;
 import com.btk.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,8 @@ import static com.btk.constant.ApiUrls.*;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping(CREATE_ORDER+"/{token}")
-    public ResponseEntity<String> createOrder(@RequestBody CreateOrderRequestDto dto, @PathVariable String token){
-        return ResponseEntity.ok(orderService.createOrder(dto,token));
+    @PostMapping(CREATE_ORDER+"/{balanceId}/{token}")
+    public ResponseEntity<String> createOrder(@PathVariable String balanceId, @PathVariable String token){
+        return ResponseEntity.ok(orderService.createOrder(balanceId,token));
     }
 }

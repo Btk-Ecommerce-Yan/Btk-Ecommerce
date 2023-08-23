@@ -15,12 +15,12 @@ public class BalanceController {
 
     private final BalanceService balanceService;
 
-    @PostMapping("/add-balance/{amountOfBalance}/{token}")
+    @PostMapping(ADD_BALANCE+"/{amountOfBalance}/{token}")
     private ResponseEntity<AddBalanceResponseDto> addBalance(@PathVariable Double amountOfBalance ,@PathVariable String token){
         return ResponseEntity.ok(balanceService.addBalance(amountOfBalance, token));
     }
 
-    @PostMapping("/create-balance/{authId}")
+    @PostMapping(CREATE_BALANCE+"/{authId}")
     private ResponseEntity<Boolean> createBalance(@PathVariable Long authId){
         return ResponseEntity.ok(balanceService.createBalance(authId));
     }

@@ -15,7 +15,7 @@ import static com.btk.constant.ApiUrls.*;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/create-order/{token}")
+    @PostMapping(CREATE_ORDER+"/{token}")
     public ResponseEntity<String> createOrder(@RequestBody CreateOrderRequestDto dto, @PathVariable String token){
         return ResponseEntity.ok(orderService.createOrder(dto,token));
     }

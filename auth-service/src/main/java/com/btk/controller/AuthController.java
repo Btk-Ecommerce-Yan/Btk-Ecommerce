@@ -36,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping(ACTIVATE_STATUS)
-    @Operation(summary = "Kullanıcı kayıt olduğunda, 'PENDING' olan hesap durumunu 'ACTIVE'e dönüştürmek.")
+    @Operation(summary = "Kullanıcı kayıt olduğunda, 'PENDING' olan hesap durumunu 'ACTIVE'e dönüştürebilmesi.")
     public ResponseEntity<String> activateStatus(@RequestBody ActivateRequestDto dto) {
         return ResponseEntity.ok(authService.activateStatus(dto));
     }
@@ -47,7 +47,7 @@ public class AuthController {
     }
 
     @PutMapping(FORGOT_PASSWORD)
-    @Operation(summary = "Kullanıcı şifresini unuttuğunda kullanacağı şifre değiştirme metodu.")
+    @Operation(summary = "Kullanıcı şifresini unuttuğunda kullanacağı şifre değiştirebilmesi.")
     public ResponseEntity<String> forgotPassword(@PathVariable String email) {
         return ResponseEntity.ok(authService.forgotPassword(email));
     }

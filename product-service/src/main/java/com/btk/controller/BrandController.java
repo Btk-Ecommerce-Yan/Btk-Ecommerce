@@ -25,7 +25,7 @@ public class BrandController {
         return ResponseEntity.ok(brandService.save(brandName));
     }
 
-    @GetMapping("")
+    @GetMapping(GET_ALL)
     public ResponseEntity<List<Brand>> getAll(){
         return ResponseEntity.ok(brandService.findAll());
     }

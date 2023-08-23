@@ -2,11 +2,9 @@ package com.btk.controller;
 
 import com.btk.dto.request.ProductSaveRequestDto;
 import com.btk.dto.request.ProductUpdateRequestDto;
-import com.btk.dto.response.ProductDetailsResponseDto;
-import com.btk.dto.response.ProductSaveResponseDto;
-import com.btk.dto.response.ProductUpdateResponseDto;
-import com.btk.dto.response.SearchProductResponseDto;
+import com.btk.dto.response.*;
 import com.btk.service.ProductService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +63,12 @@ public class ProductController {
     public ResponseEntity<Double> getPriceByProductId(@PathVariable String productId){
         return ResponseEntity.ok(productService.getPriceByProductId(productId));
     }
+    //@Hidden
+    @GetMapping("/find-product-descriptions-by-product-id/{productId}")
+    public ResponseEntity<GetProductDescriptionsFromProductServiceResponseDto> findDescriptionsByProductId(@PathVariable String productId){
+        return ResponseEntity.ok(productService.findDescriptionsByProductId(productId));
+    }
+
 
 
 }

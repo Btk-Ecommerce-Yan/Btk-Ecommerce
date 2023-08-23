@@ -56,6 +56,7 @@ public class BasketService extends ServiceManager<Basket, String> {
     public List<Basket> findAll(){
         return basketRepository.findAll();
     }
+
     public Double totalPriceInBasket(String token, TotalPriceRequestDto dto){
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {

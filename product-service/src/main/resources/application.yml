@@ -20,7 +20,7 @@ spring:
 
 logging:
   file:
-    name: D:\Btk-Ecommerce\product-service\logs\app.log  #loglamanın yapılacağı path yolu
+    name: D:\Btk-Ecommerce\product-service\logs\product-app.log  #loglamanın yapılacağı path yolu
   level:
     com.btk.service: DEBUG #loglama seviyesi
 

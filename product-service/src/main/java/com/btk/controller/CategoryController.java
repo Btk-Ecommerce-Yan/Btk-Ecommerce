@@ -18,14 +18,14 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping("/save-category")
+    @PostMapping(SAVE_CATEGORY)
     public ResponseEntity<Boolean> save(String categoryName, String token) {
         return ResponseEntity.ok(categoryService.save(categoryName, token));
     }
 
-    @PutMapping("/update-category/{token}")
-    public ResponseEntity<Boolean> updateCategory(@RequestBody CategoryUpdateRequestDto dto,@PathVariable String token) {
-        return ResponseEntity.ok(categoryService.updateCategory(dto,token));
+    @PutMapping(UPDATE_CATEGORY + "/{token}")
+    public ResponseEntity<Boolean> updateCategory(@RequestBody CategoryUpdateRequestDto dto, @PathVariable String token) {
+        return ResponseEntity.ok(categoryService.updateCategory(dto, token));
     }
 
 

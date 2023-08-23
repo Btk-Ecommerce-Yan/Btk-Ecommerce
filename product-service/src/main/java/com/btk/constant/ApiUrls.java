@@ -7,7 +7,10 @@ public class ApiUrls {
     public static final String CATEGORY = VERSION + "/category";
     public static final String BRAND = VERSION + "/brand";
     public static final String SAVE_PRODUCT = "/save-product";
+    public static final String SAVE_CATEGORY = "/save-category";
+    public static final String SAVE_BRAND = "/save-brand";
     public static final String UPDATE_PRODUCT = "/update-product";
+    public static final String UPDATE_CATEGORY = "/update-category";
     public static final String DELETED_PRODUCT = "/{productId}";
     public static final String PRODUCT_DETAILS = "/product-details";
     public static final String PRODUCT_SEARCH_WITH_CATEGORY_NAME = "/product-search-with-category-name";

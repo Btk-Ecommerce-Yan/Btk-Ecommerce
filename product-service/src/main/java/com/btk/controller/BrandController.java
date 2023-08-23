@@ -20,7 +20,7 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    @PostMapping("")
+    @PostMapping(SAVE_BRAND)
     public ResponseEntity<Boolean> save(String brandName){
         return ResponseEntity.ok(brandService.save(brandName));
     }

@@ -17,6 +17,6 @@ spring:
     password: root
 logging:
   file:
-    name: D:\Btk-Ecommerce\product-service\logs\user-app.log  #loglamanın yapılacağı path yolu
+    name: user-service/src/main/resources/logs/user-app.log  #D:\Btk-Ecommerce\product-service\logs\user-app.log  #loglamanın yapılacağı path yolu
   level:
     com.btk.service: DEBUG #loglama seviyesi

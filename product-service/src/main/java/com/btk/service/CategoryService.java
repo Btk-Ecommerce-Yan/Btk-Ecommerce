@@ -9,6 +9,7 @@ import com.btk.repository.ICategoryRepository;
 import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class CategoryService extends ServiceManager<Category, String> {
         this.categoryRepository = categoryRepository;
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
+    @Transactional
     public Boolean save(String categoryName, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         roles.forEach(role -> {
@@ -38,7 +39,7 @@ public class CategoryService extends ServiceManager<Category, String> {
         });
         return true;
     }
-
+    @Transactional
     public Boolean updateCategory(CategoryUpdateRequestDto dto,String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         roles.forEach(role -> {

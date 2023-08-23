@@ -14,6 +14,7 @@ import com.btk.repository.IProductRepository;
 import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ProductService extends ServiceManager<Product, String> {
         this.categoryService = categoryService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
+    @Transactional
     public ProductSaveResponseDto save(ProductSaveRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         if (roles.contains(ERole.SITE_MANAGER.toString())) {
@@ -53,7 +54,7 @@ public class ProductService extends ServiceManager<Product, String> {
             throw new ProductManagerException(ErrorType.NOT_AUTHORIZED);
         }
     }
-
+    @Transactional
     public ProductUpdateResponseDto update(ProductUpdateRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         if (roles.contains(ERole.SITE_MANAGER.toString())) {
@@ -79,7 +80,7 @@ public class ProductService extends ServiceManager<Product, String> {
             throw new ProductManagerException(ErrorType.NOT_AUTHORIZED);
         }
     }
-
+    @Transactional(readOnly = true)
     public ProductDetailsResponseDto productDetails(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductManagerException(ErrorType.PRODUCT_NOT_FOUND));
 
@@ -103,7 +104,7 @@ public class ProductService extends ServiceManager<Product, String> {
                 .build();
         return productDetailsResponseDto;
     }
-
+    @Transactional(readOnly = true)
     public List<SearchProductResponseDto> searchProductWithCategoryName(String categoryName) {
         Category category = categoryService.getCategoryWithCategoryName(categoryName);
         List<Product> products = productRepository.findProductByCategoryIdsContains(category.getCategoryId());
@@ -117,10 +118,11 @@ public class ProductService extends ServiceManager<Product, String> {
         }).collect(Collectors.toList());
         return searchProductResponseDto;
     }
+    //sale modülünden basket servisinin open feigni için yazıldı
     public Double getPriceByProductId(String productId){
         return productRepository.findById(productId).get().getPrice();
     }
-
+    @Transactional(readOnly = true)
     public List<SearchProductResponseDto> searchProductWithProductName(String productName) {
         List<Product> products = productRepository.findProductByProductNameContainsIgnoreCase(productName);
         List<SearchProductResponseDto> searchProductResponseDto = products.stream().map(product -> {
@@ -133,7 +135,7 @@ public class ProductService extends ServiceManager<Product, String> {
         }).collect(Collectors.toList());
         return searchProductResponseDto;
     }
-
+    @Transactional(readOnly = true)
     public List<SearchProductResponseDto> searchProductWithProductPrice(Double minPrice, Double maxPrice) {
         List<Product> products;
         if (minPrice == null) products = productRepository.findByPriceLessThanEqual(maxPrice);
@@ -150,7 +152,8 @@ public class ProductService extends ServiceManager<Product, String> {
         }).collect(Collectors.toList());
         return searchProductResponseDto;
     }
-       public GetProductDescriptionsFromProductServiceResponseDto findDescriptionsByProductId(String productId){
+    //sale modülünden basket servisinin open feigni için yazıldı
+    public GetProductDescriptionsFromProductServiceResponseDto findDescriptionsByProductId(String productId){
         Product product=findById(productId).get();
         GetProductDescriptionsFromProductServiceResponseDto dto=IProductMapper.INSTANCE.toGetProductDescriptionsFromProductServiceResponseDtoFromProduct(product);
         return dto;

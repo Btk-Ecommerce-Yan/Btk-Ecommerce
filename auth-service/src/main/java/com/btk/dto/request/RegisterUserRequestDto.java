@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 public class RegisterUserRequestDto {
-
     @NotBlank(message = "Adınızı boş bırakmayınız.")
     private String name;
     private String middleName;

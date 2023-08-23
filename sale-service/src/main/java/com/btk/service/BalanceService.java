@@ -8,6 +8,7 @@ import com.btk.repository.IBalanceRepository;
 import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ public class BalanceService extends ServiceManager<Balance, String> {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userManager = userManager;
     }
-
+    @Transactional
     public Boolean createBalance(Long authId) {
         String userId = userManager.findByAuthId(authId).getBody();
         Balance balance = Balance.builder().amountOfBalance(0d).userId(userId).build();
@@ -33,7 +34,7 @@ public class BalanceService extends ServiceManager<Balance, String> {
 
 //        throw new SaleManagerException(ErrorType.BALANCE_EXIST_ERROR);
     }
-
+    @Transactional
     public AddBalanceResponseDto addBalance(Double amountOfBalance, String token) {
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         String userId = userManager.findByAuthId(authId.get()).getBody();

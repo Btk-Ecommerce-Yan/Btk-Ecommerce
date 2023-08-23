@@ -28,7 +28,7 @@ public class ProductController {
     }
 
     @PutMapping(UPDATE_PRODUCT + "/{token}")
-    public ResponseEntity<ProductUpdateResponseDto> update(@RequestBody ProductUpdateRequestDto dto, @PathVariable String token) {
+    public ResponseEntity<ProductUpdateResponseDto> update(@RequestBody @Valid ProductUpdateRequestDto dto, @PathVariable String token) {
         return ResponseEntity.ok(productService.update(dto, token));
     }
 

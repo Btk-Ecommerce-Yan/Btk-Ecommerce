@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.btk.constant.ApiUrls.*;
@@ -23,7 +24,7 @@ public class BasketController {
 
     @Operation(summary = "Kullanıcının sepete ürün ekleyebilmesi.")
     @PostMapping(ADD_PRODUCT_TO_BASKET+"/{token}")
-    public ResponseEntity<Boolean> addProductToBasket(@PathVariable String token, @RequestBody AddProductToBasketRequestDto dto) {
+    public ResponseEntity<Boolean> addProductToBasket(@PathVariable String token, @RequestBody @Valid AddProductToBasketRequestDto dto) {
         return ResponseEntity.ok(basketService.addProductToBasket(token, dto));
     }
     @Operation(summary = "Kullanıcının sepetteki ürünlerin toplam fiyatını anlık olarak görüntüleyebilmesi.")

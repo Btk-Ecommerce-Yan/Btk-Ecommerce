@@ -15,6 +15,7 @@ import com.btk.utility.CodeGenerator;
 import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,7 @@ public class OrderService extends ServiceManager<Order, String> {
     }
 
     // TODO : PRODUCTLARIN TOPLAM FİYATLARI İÇİN METOT ÇAĞIRILACAK VE ONA GÖRE ONAYLANIP KONTROL EDİLECEK
+    @Transactional
     public String createOrder(CreateOrderRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         if (!roles.contains(ERole.USER.toString())) {

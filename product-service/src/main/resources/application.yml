@@ -1,6 +1,9 @@
 server:
   port: 9092
 spring:
+  output:
+    ansi:
+      enabled: ALWAYS
   data:
     mongodb:
       host: localhost
@@ -14,3 +17,15 @@ spring:
     port: 5672
     username: java
     password: root
+
+logging:
+  file:
+    name: D:\Btk-Ecommerce\product-service\logs\app.log  #loglamanın yapılacağı path yolu
+  level:
+    com.btk.service: DEBUG #loglama seviyesi
+
+  #Düşükten yükseğe loglama seviyeleri
+  #---Trace, Debug, Info, Warn, Error, Fatal--- (Her bir loglama seviyesinin bir kullanım amacı vardır.)
+  #Ne kadar yüksek bir seviye seçilirse o kadar az log gözükür.
+  #Yani Error seçilirse bu seviyeden düşük loglar console' da görüntülenemez.
+  #Bu yüzden burada com.btk.service altındaki bütün sınıfların loglama seviyeleri DEBUG olarak belirlenmiştir.

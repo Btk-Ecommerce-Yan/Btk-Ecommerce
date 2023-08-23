@@ -12,4 +12,5 @@ public interface IUserRepository extends MongoRepository<UserProfile,String> {
     Optional<UserProfile> findByAuthId(Long authId);
 
 
+
 }

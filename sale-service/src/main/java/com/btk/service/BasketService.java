@@ -7,6 +7,7 @@ import com.btk.dto.request.UpdateBasketRequestDto;
 import com.btk.dto.response.GetProductDescriptionsFromProductServiceResponseDto;
 import com.btk.entity.Basket;
 import com.btk.entity.enums.ERole;
+import com.btk.entity.enums.EStatus;
 import com.btk.exception.ErrorType;
 import com.btk.exception.SaleManagerException;
 import com.btk.manager.IProductManager;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,37 +56,41 @@ public class BasketService extends ServiceManager<Basket, String> {
             throw new SaleManagerException(ErrorType.INVALID_ROLE);
         }
     }
+
     //@Cacheable(value = "findAll")
+
     @Transactional(readOnly = true)
     public List<GetProductDescriptionsFromProductServiceResponseDto> findBasketForUser(String token){
+
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
             throw new SaleManagerException(ErrorType.INVALID_TOKEN);
         }
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         if (roles.contains(ERole.USER.toString())) {
-        String userId = userManager.findByAuthId(authId.get()).getBody();
-        Optional<Basket> basket=basketRepository.findOptionalByUserId(userId);
-        List<GetProductDescriptionsFromProductServiceResponseDto> productDescriptions = basket.get().getProductIds().stream()
-                .map(productId -> productManager.findDescriptionsByProductId(productId).getBody())
-                .collect(Collectors.toList());
-        return productDescriptions;
-        }
-        else {
+            String userId = userManager.findByAuthId(authId.get()).getBody();
+            Optional<Basket> basket = basketRepository.findOptionalByUserId(userId);
+            List<GetProductDescriptionsFromProductServiceResponseDto> productDescriptions = basket.get().getProductIds().stream()
+                    .map(productId -> productManager.findDescriptionsByProductId(productId).getBody())
+                    .collect(Collectors.toList());
+            return productDescriptions;
+        } else {
             throw new SaleManagerException(ErrorType.INVALID_ROLE);
         }
     }
+
     @Transactional
     public Double totalPriceInBasket(String token, TotalPriceRequestDto dto){
+
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
             throw new SaleManagerException(ErrorType.INVALID_TOKEN);
         }
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         if (roles.contains(ERole.USER.toString())) {
-            Basket basket=basketRepository.findOptionalByBasketId(dto.getBasketId()).get();
+            Basket basket = basketRepository.findOptionalByBasketId(dto.getBasketId()).get();
             List<String> productIds = basket.getProductIds();
-            Double totalPrice =  productIds.stream()
+            Double totalPrice = productIds.stream()
                     .map(productId -> productManager.findPriceByProductId(productId).getBody())
                     .mapToDouble(Double::doubleValue)
                     .sum();
@@ -92,8 +98,10 @@ public class BasketService extends ServiceManager<Basket, String> {
         }
         return 0.0;
     }
+
     @Transactional
     public List<GetProductDescriptionsFromProductServiceResponseDto> updateBasket(String token, UpdateBasketRequestDto dto){
+
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
             throw new SaleManagerException(ErrorType.INVALID_TOKEN);
@@ -101,7 +109,7 @@ public class BasketService extends ServiceManager<Basket, String> {
 
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         if (roles.contains(ERole.USER.toString())) {
-            Basket basket=findById(dto.getBasketId()).get();
+            Basket basket = findById(dto.getBasketId()).get();
 
             List<String> newProductIds = dto.getProductIds();
             basket.getProductIds().addAll(newProductIds);
@@ -113,9 +121,11 @@ public class BasketService extends ServiceManager<Basket, String> {
         } else {
             throw new SaleManagerException(ErrorType.INVALID_ROLE);
         }
+
         }
     @Transactional
-    public List<GetProductDescriptionsFromProductServiceResponseDto> deleteProductFromBasket(String token, DeleteProductFromBasketRequestDto dto){
+    public List<GetProductDescriptionsFromProductServiceResponseDto> deleteProductFromBasket(String token, DeleteProductFromBasketRequestDto dto) {
+
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
             throw new SaleManagerException(ErrorType.INVALID_TOKEN);
@@ -129,12 +139,18 @@ public class BasketService extends ServiceManager<Basket, String> {
                     .map(productId -> productManager.findDescriptionsByProductId(productId).getBody())
                     .collect(Collectors.toList());
             return productDescriptions;
-        }
-        else {
+        } else {
             throw new SaleManagerException(ErrorType.INVALID_ROLE);
         }
     }
 
+    public Optional<Basket> getBasketIdByUserId(String userId) {
+        Optional<Basket> optionalBasket = basketRepository.findOptionalByUserIdAndStatus(userId,EStatus.ACTIVE);
+        if(optionalBasket.isEmpty()){
+            throw new SaleManagerException(ErrorType.HAS_NOT_ACTIVE_BASKET);
+        }
+        return optionalBasket;
+    }
 
 
 }

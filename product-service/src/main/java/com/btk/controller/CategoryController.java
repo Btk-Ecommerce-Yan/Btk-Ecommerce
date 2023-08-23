@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.btk.constant.ApiUrls.*;
@@ -24,7 +25,7 @@ public class CategoryController {
     }
 
     @PutMapping(UPDATE_CATEGORY + "/{token}")
-    public ResponseEntity<Boolean> updateCategory(@RequestBody CategoryUpdateRequestDto dto, @PathVariable String token) {
+    public ResponseEntity<Boolean> updateCategory(@RequestBody @Valid CategoryUpdateRequestDto dto, @PathVariable String token) {
         return ResponseEntity.ok(categoryService.updateCategory(dto, token));
     }
 

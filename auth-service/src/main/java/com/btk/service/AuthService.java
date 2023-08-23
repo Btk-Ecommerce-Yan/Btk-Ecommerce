@@ -19,6 +19,7 @@ import com.btk.util.JwtTokenProvider;
 import com.btk.util.ServiceManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         this.userProfileManager = userProfileManager;
         this.saleManager = saleManager;
     }
-
+    @Transactional
     public String registerUser(RegisterUserRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
         if (!optionalAuth.isEmpty())
@@ -62,6 +63,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         return "Hesabınızı aktif edeceğiniz aktivasyon kodunuz: " + auth.getActivationCode();
     }
     //TODO Metod test edilmedi.
+    @Transactional
     public String registerSiteManager(RegisterUserRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         Auth auth = IAuthMapper.INSTANCE.fromUserRequestDtoToAuth(dto);
@@ -80,7 +82,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         }
         return "Hesabınızı aktif edeceğiniz aktivasyon kodunuz: " + auth.getActivationCode();
     }
-
+    @Transactional
     public String activateStatus(ActivateRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
         if (optionalAuth.isEmpty())
@@ -92,7 +94,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         userProfileManager.activateStatus(optionalAuth.get().getAuthId());
         return "Hesabınız aktif edilmiştir";
     }
-
+    @Transactional
     public LoginResponseDto login(LoginRequestDto dto) {
         Optional<Auth> auth = authRepository.findOptionalByEmail(dto.getEmail());
         if (auth.isEmpty() || !passwordEncoder.matches(dto.getPassword(), auth.get().getPassword())) {
@@ -108,7 +110,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
                 });
         return LoginResponseDto.builder().roles(roleList).token(token).build();
     }
-
+    @Transactional
     public String forgotPassword(String email) {
         Optional<Auth> auth = authRepository.findOptionalByEmail(email);
         if (auth.isEmpty())

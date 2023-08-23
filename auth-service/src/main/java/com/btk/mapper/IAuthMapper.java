@@ -13,27 +13,10 @@ public interface IAuthMapper {
 
     Auth fromUserRequestDtoToAuth(final RegisterUserRequestDto dto);
     NewCreateUserRequestDto fromAuthToNewCreateUserDto(final RegisterUserRequestDto dto);
-/*    RegisterResponseDto fromAuthToResponseDto(final Auth auth);
 
-    Auth fromManagerRequestDtoToAuth(final RegisterManagerRequestDto dto);
-*/
     ForgotPasswordUserRequestDto fromAuthToForgotPasswordUserRequestDto(final Auth auth);
-/*
-    RegisterMailHelloModel fromAuthToRegisterMailHelloModel(final Auth auth);
 
-    Auth fromCreatePersonelProfileDtotoAuth(final AuthCreatePersonnelProfileResponseDto dto);
-
-
-    RegisterMailModel fromAuthToRegisterMailModel(final Auth auth);
-*/
     NewCreateUserRequestDto fromAuthNewCreateUserRequestDto(final Auth auth);
-/*
-    NewCreateManagerUserRequestDto fromRegisterManagerRequestDtoToNewCreateManagerUserRequestDto(final RegisterManagerRequestDto dto);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateBecauseOfUserProfile(PersonelUpdateUserProfileToAuthRequestDto dto, @MappingTarget Auth auth);
-
-    SubscribeCompanyRequestDto fromRegisterManagerRequestDtoToSubscribeCompanyRequestDto(final RegisterManagerRequestDto dto);
- */
 
 }

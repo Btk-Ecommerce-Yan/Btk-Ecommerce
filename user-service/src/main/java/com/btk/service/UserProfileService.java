@@ -16,6 +16,7 @@ import com.btk.util.JwtTokenProvider;
 import com.btk.util.ServiceManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class UserProfileService extends ServiceManager<UserProfile,String> {
         update(optionalUserProfile.get());
         return true;
     }
-
+    @Transactional
     public String changePassword(UserChangePasswordRequestDto dto) {
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(dto.getToken());
         if (authId.isEmpty()){

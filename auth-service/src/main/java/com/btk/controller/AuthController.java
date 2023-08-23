@@ -31,24 +31,24 @@ public class AuthController {
 
     @PostMapping(REGISTER_SITE_MANAGER)
     @Operation(summary = "Admin Site-Manager kayıt ederken kullanılıyor.")
-    public ResponseEntity<String> registerSiteManager(@RequestBody RegisterUserRequestDto dto, @PathVariable String token) {
+    public ResponseEntity<String> registerSiteManager(@RequestBody @Valid RegisterUserRequestDto dto, @PathVariable String token) {
         return ResponseEntity.ok(authService.registerSiteManager(dto, token));
     }
 
     @PostMapping(ACTIVATE_STATUS)
     @Operation(summary = "Kullanıcı kayıt olduğunda, 'PENDING' olan hesap durumunu 'ACTIVE'e dönüştürebilmesi.")
-    public ResponseEntity<String> activateStatus(@RequestBody ActivateRequestDto dto) {
+    public ResponseEntity<String> activateStatus(@RequestBody @Valid ActivateRequestDto dto) {
         return ResponseEntity.ok(authService.activateStatus(dto));
     }
 
     @PostMapping(LOGIN)
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto dto) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto dto) {
         return ResponseEntity.ok(authService.login(dto));
     }
 
     @PutMapping(FORGOT_PASSWORD)
     @Operation(summary = "Kullanıcı şifresini unuttuğunda kullanacağı şifre değiştirebilmesi.")
-    public ResponseEntity<String> forgotPassword(@PathVariable String email) {
+    public ResponseEntity<String> forgotPassword(@PathVariable @Valid String email) {
         return ResponseEntity.ok(authService.forgotPassword(email));
     }
 

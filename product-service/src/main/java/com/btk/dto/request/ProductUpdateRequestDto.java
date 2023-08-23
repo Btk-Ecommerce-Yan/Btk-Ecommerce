@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -12,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProductUpdateRequestDto {
+    @NotBlank(message = "Product id boş bırakılamaz!!")
     private String productId;
     private String productName;
     private Double price;

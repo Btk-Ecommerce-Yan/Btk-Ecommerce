@@ -18,6 +18,7 @@ import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLOutput;
 import java.util.List;
@@ -38,7 +39,7 @@ public class BasketService extends ServiceManager<Basket, String> {
         this.userManager = userManager;
         this.productManager = productManager;
     }
-
+    @Transactional
     public Boolean addProductToBasket(String token, AddProductToBasketRequestDto dto) {
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
@@ -57,7 +58,10 @@ public class BasketService extends ServiceManager<Basket, String> {
     }
 
     //@Cacheable(value = "findAll")
-    public List<GetProductDescriptionsFromProductServiceResponseDto> findBasketForUser(String token) {
+
+    @Transactional(readOnly = true)
+    public List<GetProductDescriptionsFromProductServiceResponseDto> findBasketForUser(String token){
+
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
             throw new SaleManagerException(ErrorType.INVALID_TOKEN);
@@ -75,7 +79,9 @@ public class BasketService extends ServiceManager<Basket, String> {
         }
     }
 
-    public Double totalPriceInBasket(String token, TotalPriceRequestDto dto) {
+    @Transactional
+    public Double totalPriceInBasket(String token, TotalPriceRequestDto dto){
+
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
             throw new SaleManagerException(ErrorType.INVALID_TOKEN);
@@ -93,7 +99,9 @@ public class BasketService extends ServiceManager<Basket, String> {
         return 0.0;
     }
 
-    public List<GetProductDescriptionsFromProductServiceResponseDto> updateBasket(String token, UpdateBasketRequestDto dto) {
+    @Transactional
+    public List<GetProductDescriptionsFromProductServiceResponseDto> updateBasket(String token, UpdateBasketRequestDto dto){
+
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
             throw new SaleManagerException(ErrorType.INVALID_TOKEN);
@@ -113,9 +121,11 @@ public class BasketService extends ServiceManager<Basket, String> {
         } else {
             throw new SaleManagerException(ErrorType.INVALID_ROLE);
         }
-    }
 
+        }
+    @Transactional
     public List<GetProductDescriptionsFromProductServiceResponseDto> deleteProductFromBasket(String token, DeleteProductFromBasketRequestDto dto) {
+
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         if (authId.isEmpty()) {
             throw new SaleManagerException(ErrorType.INVALID_TOKEN);

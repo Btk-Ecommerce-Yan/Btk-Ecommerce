@@ -63,7 +63,7 @@ public class ProductController {
 
     @Hidden
     @GetMapping("/get-by-product-id/{productId}")
-    public ResponseEntity<Double> getPriceByProductId(@PathVariable String productId){
+    public ResponseEntity<Double> findPriceByProductId(@PathVariable String productId){
         return ResponseEntity.ok(productService.getPriceByProductId(productId));
     }
     @Hidden

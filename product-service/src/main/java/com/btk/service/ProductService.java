@@ -2,10 +2,7 @@ package com.btk.service;
 
 import com.btk.dto.request.ProductSaveRequestDto;
 import com.btk.dto.request.ProductUpdateRequestDto;
-import com.btk.dto.response.ProductDetailsResponseDto;
-import com.btk.dto.response.ProductSaveResponseDto;
-import com.btk.dto.response.ProductUpdateResponseDto;
-import com.btk.dto.response.SearchProductResponseDto;
+import com.btk.dto.response.*;
 import com.btk.entity.Brand;
 import com.btk.entity.Category;
 import com.btk.entity.Product;
@@ -153,5 +150,9 @@ public class ProductService extends ServiceManager<Product, String> {
         }).collect(Collectors.toList());
         return searchProductResponseDto;
     }
-
+       public GetProductDescriptionsFromProductServiceResponseDto findDescriptionsByProductId(String productId){
+        Product product=findById(productId).get();
+        GetProductDescriptionsFromProductServiceResponseDto dto=IProductMapper.INSTANCE.toGetProductDescriptionsFromProductServiceResponseDtoFromProduct(product);
+        return dto;
+    }
 }

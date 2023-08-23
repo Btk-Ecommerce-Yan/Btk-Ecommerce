@@ -1,10 +1,7 @@
 package com.btk.service;
 
-import com.btk.dto.request.CreateBalanceRequestDto;
 import com.btk.dto.response.AddBalanceResponseDto;
 import com.btk.entity.Balance;
-import com.btk.exception.ErrorType;
-import com.btk.exception.SaleManagerException;
 import com.btk.manager.IUserManager;
 import com.btk.mapper.IBalanceMapper;
 import com.btk.repository.IBalanceRepository;

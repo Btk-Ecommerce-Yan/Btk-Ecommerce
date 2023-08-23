@@ -1,6 +1,5 @@
 package com.btk.controller;
 
-import com.btk.dto.request.CreateBalanceRequestDto;
 import com.btk.dto.response.AddBalanceResponseDto;
 import com.btk.service.BalanceService;
 import lombok.RequiredArgsConstructor;

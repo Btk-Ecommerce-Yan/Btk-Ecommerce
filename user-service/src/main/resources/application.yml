@@ -15,3 +15,8 @@ spring:
     port: 5672
     username: java
     password: root
+logging:
+  file:
+    name: D:\Btk-Ecommerce\product-service\logs\user-app.log  #loglamanın yapılacağı path yolu
+  level:
+    com.btk.service: DEBUG #loglama seviyesi

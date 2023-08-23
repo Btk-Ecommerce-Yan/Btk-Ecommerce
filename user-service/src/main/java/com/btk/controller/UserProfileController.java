@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.btk.constant.ApiUrls.*;
 
 @RestController
@@ -39,12 +41,12 @@ public class UserProfileController {
 
     @PutMapping(PASS_CHANGE)
     @Operation(summary = "Kullanıcının giriş yaptıktan sonra şifresini değiştirebilmesi.")
-    public ResponseEntity<String> changePassword(@RequestBody UserChangePasswordRequestDto dto) {
+    public ResponseEntity<String> changePassword(@Valid @RequestBody UserChangePasswordRequestDto dto) {
         return ResponseEntity.ok(userProfileService.changePassword(dto));
     }
 
     @Hidden
-    @GetMapping("/find-by-auth-id/{authId}")
+    @GetMapping(FIND_BY_AUTH_ID+"/{authId}")
     public ResponseEntity<String> findByAuthId(@PathVariable Long authId) {
         return ResponseEntity.ok(userProfileService.findByAuthId(authId));
     }

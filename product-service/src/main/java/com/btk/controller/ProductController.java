@@ -62,12 +62,12 @@ public class ProductController {
     }
 
     @Hidden
-    @GetMapping("/get-by-product-id/{productId}")
+    @GetMapping(GET_PRICE_BY_PRODUCT_ID+"/{productId}")
     public ResponseEntity<Double> findPriceByProductId(@PathVariable String productId){
         return ResponseEntity.ok(productService.getPriceByProductId(productId));
     }
     @Hidden
-    @GetMapping("/find-product-descriptions-by-product-id/{productId}")
+    @GetMapping(FIND_PRODUCT_DESCRIPTIONS_BY_PRODUCT_ID+"/{productId}")
     public ResponseEntity<GetProductDescriptionsFromProductServiceResponseDto> findDescriptionsByProductId(@PathVariable String productId){
         return ResponseEntity.ok(productService.findDescriptionsByProductId(productId));
     }

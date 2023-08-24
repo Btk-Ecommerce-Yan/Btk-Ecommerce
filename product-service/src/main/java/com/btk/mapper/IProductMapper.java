@@ -9,6 +9,8 @@ import com.btk.entity.Product;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface IProductMapper {
     IProductMapper INSTANCE= Mappers.getMapper(IProductMapper.class);
@@ -19,6 +21,6 @@ public interface IProductMapper {
     Product updateFromDtoToProduct(final ProductUpdateRequestDto dto, @MappingTarget Product product);
     ProductUpdateResponseDto toUpdateDtoFromProduct(final Product product);
     GetProductDescriptionsFromProductServiceResponseDto toGetProductDescriptionsFromProductServiceResponseDtoFromProduct(final Product product);
-
+    List<GetProductDescriptionsFromProductServiceResponseDto> toListGetProductsDescriptionFromProductList(final List<Product> productList );
 
 }

@@ -73,5 +73,10 @@ public class ProductController {
     }
 
 
+    @GetMapping(FIND_PRODUCT_LIST_WITH_DESCRIPTIONS_ACCORDING_TO_DATE)
+    public ResponseEntity <List<GetProductDescriptionsFromProductServiceResponseDto>> findFilteredProductsList(@RequestParam(required = false) Long date1, @RequestParam(required = false) Long date2){
+        return ResponseEntity.ok(productService.findFilteredProductsListWithDates(date1, date2));
+    }
+
 
 }

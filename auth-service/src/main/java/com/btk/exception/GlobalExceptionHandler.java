@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
                 .message(errorType.getMessage())
                 .build();
     }
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     public final ResponseEntity<ErrorMessage> handleAllExceptions(Exception exception) {
         ErrorType errorType = ErrorType.INTERNAL_ERROR;
         List<String> fields = new ArrayList<>();
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
         ErrorMessage errorMessage = createError(errorType, exception);
         errorMessage.setFields(fields);
         return new ResponseEntity<>(createError(errorType, exception), errorType.getHttpStatus());
-    }
+    }*/
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
         return ResponseEntity.ok("Beklenmeyen bir hata olustu: " + ex.getMessage());

@@ -9,4 +9,5 @@ dependencies {
     implementation libs.postgresql
     implementation libs.springBootRabbitMQ
     implementation libs.springCloudConfigClient
+
 }

@@ -7,11 +7,13 @@ import com.btk.service.ProductService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import static com.btk.constant.ApiUrls.*;
@@ -72,11 +74,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.findDescriptionsByProductId(productId));
     }
 
-
     @GetMapping(FIND_PRODUCT_LIST_WITH_DESCRIPTIONS_ACCORDING_TO_DATE)
     public ResponseEntity <List<GetProductDescriptionsFromProductServiceResponseDto>> findFilteredProductsList(@RequestParam(required = false) Long date1, @RequestParam(required = false) Long date2){
         return ResponseEntity.ok(productService.findFilteredProductsListWithDates(date1, date2));
     }
-
 
 }

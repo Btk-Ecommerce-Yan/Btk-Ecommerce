@@ -4,10 +4,12 @@ import com.btk.dto.request.CategoryUpdateRequestDto;
 import com.btk.entity.Category;
 import com.btk.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import static com.btk.constant.ApiUrls.*;

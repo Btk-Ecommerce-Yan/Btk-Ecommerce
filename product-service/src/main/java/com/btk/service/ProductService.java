@@ -111,7 +111,9 @@ public class ProductService extends ServiceManager<Product, String> {
     @Transactional(readOnly = true)
     public List<SearchProductResponseDto> searchProductWithCategoryName(String categoryName) {
         Category category = categoryService.getCategoryWithCategoryName(categoryName);
+        System.out.println(categoryName);
         List<Product> products = productRepository.findProductByCategoryIdsContains(category.getCategoryId());
+        System.out.println(products);
         List<SearchProductResponseDto> searchProductResponseDto = products.stream().map(product -> {
             SearchProductResponseDto dto = SearchProductResponseDto.builder()
                     .productName(product.getProductName())
@@ -120,6 +122,7 @@ public class ProductService extends ServiceManager<Product, String> {
                     .build();
             return dto;
         }).collect(Collectors.toList());
+        System.out.println(searchProductResponseDto);
         return searchProductResponseDto;
     }
 

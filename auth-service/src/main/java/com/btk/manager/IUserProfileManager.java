@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface IUserProfileManager {
     @PostMapping("/create-user")
     ResponseEntity<Boolean> createUser(@RequestBody NewCreateUserRequestDto dto);
+    @PostMapping("/create-site-manager")
+    ResponseEntity<Boolean> createSiteManager(@RequestBody NewCreateUserRequestDto dto);
     @PutMapping("/activate-status/{authId}")
     ResponseEntity<Boolean> activateStatus(@PathVariable Long authId);
     @PutMapping("/forgot-password")

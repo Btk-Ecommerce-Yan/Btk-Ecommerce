@@ -5,4 +5,5 @@ include 'product-service'
 include 'sale-service'
 include 'api-gateway'
 include 'config-server'
+include 'mail-service'
 

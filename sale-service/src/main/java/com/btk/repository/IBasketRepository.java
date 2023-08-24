@@ -14,5 +14,4 @@ public interface IBasketRepository extends MongoRepository<Basket,String> {
     Optional<Basket> findOptionalByUserId(String userId);
     Optional<Basket> findOptionalByUserIdAndStatus(String userId, EStatus status);
     Optional<List<Basket>> findAllByUserIdAndStatus(String userId,EStatus status);
-
 }

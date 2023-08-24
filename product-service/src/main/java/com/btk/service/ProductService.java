@@ -166,4 +166,12 @@ public class ProductService extends ServiceManager<Product, String> {
         GetProductDescriptionsFromProductServiceResponseDto dto = IProductMapper.INSTANCE.toGetProductDescriptionsFromProductServiceResponseDtoFromProduct(product);
         return dto;
     }
+
+    public List<GetProductDescriptionsFromProductServiceResponseDto> findFilteredProductsListWithDates(Long date1, Long date2){
+        List<Product> filteredProductList = productRepository.findAllByCreatedDateBetween(date1,date2);
+        List<GetProductDescriptionsFromProductServiceResponseDto> filteredGetProductDescriptionList=
+                IProductMapper.INSTANCE.toListGetProductsDescriptionFromProductList(filteredProductList);
+        System.out.println(filteredGetProductDescriptionList);
+        return filteredGetProductDescriptionList;
+    }
 }

@@ -57,8 +57,7 @@ public class BasketService extends ServiceManager<Basket, String> {
         }
     }
 
-    //@Cacheable(value = "findAll")
-
+    //@Cacheable(value = "findBasketForUser")
     @Transactional(readOnly = true)
     public List<GetProductDescriptionsFromProductServiceResponseDto> findBasketForUser(String token){
 

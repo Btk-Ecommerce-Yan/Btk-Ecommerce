@@ -17,13 +17,16 @@ import com.btk.repository.IAuthRepository;
 import com.btk.util.CodeGenerator;
 import com.btk.util.JwtTokenProvider;
 import com.btk.util.ServiceManager;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +45,29 @@ public class AuthService extends ServiceManager<Auth, Long> {
         this.userProfileManager = userProfileManager;
         this.saleManager = saleManager;
     }
-    @Transactional
+    public String exportReport(String format) throws FileNotFoundException, JRException{
+        List<Auth> authList = findAll();
+        String path = "/Users/secilcakir/Desktop";
+        File file = ResourceUtils.getFile("classpath:auth.jrxml") ;
+        JasperReport jasper = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(authList);
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("gain java", "knowledge");
+
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parameters, ds);
+
+        if (format .equalsIgnoreCase("html")){
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, path +"//auth.html");
+
+        }
+        if (format .equalsIgnoreCase("pdf")){
+
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path +"//auth.pdf");
+        }
+        return "path:"+path;
+    }
+
+        @Transactional
     public String registerUser(RegisterUserRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
         if (!optionalAuth.isEmpty())

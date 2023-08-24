@@ -10,10 +10,13 @@ import io.swagger.v3.oas.annotations.Hidden;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.io.FileNotFoundException;
 
 import static com.btk.constant.ApiUrls.*;
 
@@ -56,5 +59,10 @@ public class AuthController {
     @PutMapping(PASSWORD_CHANGE)
     ResponseEntity<Boolean> changePassword(@RequestBody ToAuthPasswordChangeDto dto) {
         return ResponseEntity.ok(authService.changePassword(dto));
+    }
+
+    @GetMapping("/export/{format}")
+    public String exportReport(@PathVariable String format) throws FileNotFoundException, JRException {
+        return authService.exportReport(format);
     }
 }

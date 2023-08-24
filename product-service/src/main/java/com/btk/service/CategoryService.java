@@ -8,10 +8,17 @@ import com.btk.exception.ProductManagerException;
 import com.btk.repository.ICategoryRepository;
 import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service

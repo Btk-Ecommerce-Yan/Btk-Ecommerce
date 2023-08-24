@@ -9,6 +9,7 @@ spring:
       username: Java
       password: root
       auto-index-creation: true
+
 logging:
   file:
     name: sale-service/src/main/resources/logs/sale-app.log  #D:\Btk-Ecommerce\product-service\logs\sale-app.log  #loglamanın yapılacağı path yolu

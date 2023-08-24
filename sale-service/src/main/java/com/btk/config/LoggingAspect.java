@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-@Aspect //Sınıfın bir Aspect olduğunu belirtir. Aspect, belirli metotlar veya sınıflar üzerinde ek işlemleri gerçekleştiren yapıdır.(bknz. interceptor)
+@Aspect //Sınıfın bir Aspect olduğunu belirtir. Aspect, belirli metotlar veya sınıflar üzerinde ek işlemleri
+// gerçekleştiren yapıdır.(bknz. interceptor)
 @Component
 public class LoggingAspect {
     private final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);

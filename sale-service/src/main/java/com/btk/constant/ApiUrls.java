@@ -17,4 +17,5 @@ public class ApiUrls {
     public static final String TOTAL_PRICE_IN_BASKET = "/total-price-in-basket";
     public static final String DELETE_PRODUCT_FROM_BASKET = "/delete-product-from-basket";
     public static final String SHOW_HISTORY_OF_ORDERS = "show-history-of-orders";
+    public static final String SHOW_HISTORY_OF_ORDERS_ACCORDING_TO_DATE="show-history-of-orders-according-to-date";
 }

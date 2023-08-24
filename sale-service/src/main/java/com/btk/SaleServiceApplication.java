@@ -15,8 +15,6 @@ public class SaleServiceApplication {
         File logFile = new File(logFilePath);
         if (logFile.exists()) {
             logFile.delete();
-        }else {
-            System.out.println("Log Dosyası Silinemedi.");
         }
         SpringApplication.run(SaleServiceApplication.class);
     }

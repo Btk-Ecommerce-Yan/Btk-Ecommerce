@@ -27,6 +27,14 @@ ext {
             springOpenFeign             : "org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
             //RabbitMQ
             springBootRabbitMQ          : "org.springframework.boot:spring-boot-starter-amqp:$versions.springBoot",
+            //Config-server
+            springCloudConfigServer     : "org.springframework.cloud:spring-cloud-config-server:$versions.springCloud",
+            springCloudConfigClient     : "org.springframework.cloud:spring-cloud-config-client:$versions.springCloud",
+            springCloudConfigStarter    : "org.springframework.cloud:spring-cloud-starter-config:$versions.springCloud",
+            //ApiGateway
+            springCloudStarterApiGateway: "org.springframework.cloud:spring-cloud-starter-gateway:$versions.springCloud",
+            springCloudCircuitBreaker   : "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:$versions.circuitBreaker",
+            springCloudCircuitReactor   : "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j:$versions.circuitBreaker"
     ]
 
 }

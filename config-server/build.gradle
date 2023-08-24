@@ -4,7 +4,6 @@ buildscript {
     }
 }
 dependencies {
-    implementation libs.mongoDB
-    implementation libs.springBootRabbitMQ
-    implementation libs.springCloudConfigClient
+    implementation libs.springCloudConfigServer
+    implementation libs.springCloudConfigStarter
 }

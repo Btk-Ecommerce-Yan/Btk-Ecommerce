@@ -42,6 +42,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         this.userProfileManager = userProfileManager;
         this.saleManager = saleManager;
     }
+
     @Transactional
     public String registerUser(RegisterUserRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
@@ -62,6 +63,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         }
         return "Hesabınızı aktif edeceğiniz aktivasyon kodunuz: " + auth.getActivationCode();
     }
+
     //TODO Metod test edilmedi.
     @Transactional
     public String registerSiteManager(RegisterUserRequestDto dto, String token) {
@@ -82,6 +84,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         }
         return "Hesabınızı aktif edeceğiniz aktivasyon kodunuz: " + auth.getActivationCode();
     }
+
     @Transactional
     public String activateStatus(ActivateRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
@@ -94,6 +97,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         userProfileManager.activateStatus(optionalAuth.get().getAuthId());
         return "Hesabınız aktif edilmiştir";
     }
+
     @Transactional
     public LoginResponseDto login(LoginRequestDto dto) {
         Optional<Auth> auth = authRepository.findOptionalByEmail(dto.getEmail());
@@ -110,6 +114,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
                 });
         return LoginResponseDto.builder().roles(roleList).token(token).build();
     }
+
     @Transactional
     public String forgotPassword(String email) {
         Optional<Auth> auth = authRepository.findOptionalByEmail(email);

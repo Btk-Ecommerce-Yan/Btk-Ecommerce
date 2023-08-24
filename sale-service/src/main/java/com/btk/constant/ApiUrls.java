@@ -1,5 +1,7 @@
 package com.btk.constant;
 
+import java.security.PublicKey;
+
 public class ApiUrls {
 
     public static final String VERSION = "api/v1";
@@ -14,5 +16,5 @@ public class ApiUrls {
     public static final String ADD_PRODUCT_TO_BASKET = VERSION + "/add-product-to-basket";
     public static final String TOTAL_PRICE_IN_BASKET = VERSION + "/total-price-in-basket";
     public static final String DELETE_PRODUCT_FROM_BASKET = VERSION + "/delete-product-from-basket";
-
+    public static final String SHOW_HISTORY_OF_ORDERS="show-history-of-orders";
 }

@@ -151,6 +151,12 @@ public class BasketService extends ServiceManager<Basket, String> {
         }
         return optionalBasket;
     }
-
+    public List<Basket> getHistoryBasketList(String userId){
+        Optional<List<Basket>> historyOfBasket= basketRepository.findAllByUserIdAndStatus(userId,EStatus.PASSIVE);
+        if (historyOfBasket.isEmpty()){
+            throw new SaleManagerException(ErrorType.HAS_NOT_PASSIVE_BASKET);
+        }
+        return historyOfBasket.get();
+    }
 
 }

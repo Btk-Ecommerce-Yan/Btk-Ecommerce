@@ -29,6 +29,7 @@ public enum ErrorType {
     INVALID_ROLE(5600,"Bu işleme erişim yetkiniz bulunmamaktadır",HttpStatus.BAD_REQUEST),
     BALANCE_EXIST_ERROR(5700,"Daha önce cüzdanınız bulunmaktadır",HttpStatus.BAD_REQUEST),
     HAS_NOT_ACTIVE_BASKET(5800,"Aktif sepetiniz bulunmamaktadır",HttpStatus.BAD_REQUEST),
+    HAS_NOT_PASSIVE_BASKET(5800,"Sepet geçmişi bulunmamaktadır",HttpStatus.BAD_REQUEST),
     INSUFFICIENT_BALANCE (5900,"Yetersiz bakiye",HttpStatus.BAD_REQUEST),
     ;
 

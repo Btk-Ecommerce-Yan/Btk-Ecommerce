@@ -38,6 +38,7 @@ public class ProductService extends ServiceManager<Product, String> {
         this.categoryService = categoryService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
+
     @Transactional
     public ProductSaveResponseDto save(ProductSaveRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
@@ -57,6 +58,7 @@ public class ProductService extends ServiceManager<Product, String> {
             throw new ProductManagerException(ErrorType.NOT_AUTHORIZED);
         }
     }
+
     @Transactional
     public ProductUpdateResponseDto update(ProductUpdateRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
@@ -83,6 +85,7 @@ public class ProductService extends ServiceManager<Product, String> {
             throw new ProductManagerException(ErrorType.NOT_AUTHORIZED);
         }
     }
+
     @Transactional(readOnly = true)
     public ProductDetailsResponseDto productDetails(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductManagerException(ErrorType.PRODUCT_NOT_FOUND));
@@ -107,10 +110,13 @@ public class ProductService extends ServiceManager<Product, String> {
                 .build();
         return productDetailsResponseDto;
     }
+
     @Transactional(readOnly = true)
     public List<SearchProductResponseDto> searchProductWithCategoryName(String categoryName) {
         Category category = categoryService.getCategoryWithCategoryName(categoryName);
+        System.out.println(categoryName);
         List<Product> products = productRepository.findProductByCategoryIdsContains(category.getCategoryId());
+        System.out.println(products);
         List<SearchProductResponseDto> searchProductResponseDto = products.stream().map(product -> {
             SearchProductResponseDto dto = SearchProductResponseDto.builder()
                     .productName(product.getProductName())
@@ -119,12 +125,15 @@ public class ProductService extends ServiceManager<Product, String> {
                     .build();
             return dto;
         }).collect(Collectors.toList());
+        System.out.println(searchProductResponseDto);
         return searchProductResponseDto;
     }
+
     //sale modülünden basket servisinin open feigni için yazıldı
-    public Double getPriceByProductId(String productId){
+    public Double getPriceByProductId(String productId) {
         return productRepository.findById(productId).get().getPrice();
     }
+
     @Transactional(readOnly = true)
     public List<SearchProductResponseDto> searchProductWithProductName(String productName) {
         List<Product> products = productRepository.findProductByProductNameContainsIgnoreCase(productName);
@@ -138,6 +147,7 @@ public class ProductService extends ServiceManager<Product, String> {
         }).collect(Collectors.toList());
         return searchProductResponseDto;
     }
+
     @Transactional(readOnly = true)
     public List<SearchProductResponseDto> searchProductWithProductPrice(Double minPrice, Double maxPrice) {
         List<Product> products;
@@ -155,10 +165,19 @@ public class ProductService extends ServiceManager<Product, String> {
         }).collect(Collectors.toList());
         return searchProductResponseDto;
     }
+
     //sale modülünden basket servisinin open feigni için yazıldı
-    public GetProductDescriptionsFromProductServiceResponseDto findDescriptionsByProductId(String productId){
-        Product product=findById(productId).get();
-        GetProductDescriptionsFromProductServiceResponseDto dto=IProductMapper.INSTANCE.toGetProductDescriptionsFromProductServiceResponseDtoFromProduct(product);
+    public GetProductDescriptionsFromProductServiceResponseDto findDescriptionsByProductId(String productId) {
+        Product product = findById(productId).get();
+        GetProductDescriptionsFromProductServiceResponseDto dto = IProductMapper.INSTANCE.toGetProductDescriptionsFromProductServiceResponseDtoFromProduct(product);
         return dto;
+    }
+
+    public List<GetProductDescriptionsFromProductServiceResponseDto> findFilteredProductsListWithDates(Long date1, Long date2){
+        List<Product> filteredProductList = productRepository.findAllByCreatedDateBetween(date1,date2);
+        List<GetProductDescriptionsFromProductServiceResponseDto> filteredGetProductDescriptionList=
+                IProductMapper.INSTANCE.toListGetProductsDescriptionFromProductList(filteredProductList);
+        System.out.println(filteredGetProductDescriptionList);
+        return filteredGetProductDescriptionList;
     }
 }

@@ -13,6 +13,7 @@ import com.btk.exception.ErrorType;
 import com.btk.manager.ISaleManager;
 import com.btk.manager.IUserProfileManager;
 import com.btk.mapper.IAuthMapper;
+import com.btk.rabbitmq.producer.RegisterMailProducer;
 import com.btk.repository.IAuthRepository;
 import com.btk.util.CodeGenerator;
 import com.btk.util.JwtTokenProvider;
@@ -36,15 +37,23 @@ public class AuthService extends ServiceManager<Auth, Long> {
     private final PasswordEncoder passwordEncoder;
     private final IUserProfileManager userProfileManager;
     private final ISaleManager saleManager;
+    private final RegisterMailProducer registerMailProducer;
 
-    public AuthService(IAuthRepository authRepository, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder, IUserProfileManager userProfileManager, ISaleManager saleManager) {
+    public AuthService(IAuthRepository authRepository,
+                       JwtTokenProvider jwtTokenProvider,
+                       PasswordEncoder passwordEncoder,
+                       IUserProfileManager userProfileManager,
+                       ISaleManager saleManager,
+                       RegisterMailProducer registerMailProducer) {
         super(authRepository);
         this.authRepository = authRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
         this.userProfileManager = userProfileManager;
         this.saleManager = saleManager;
+        this.registerMailProducer = registerMailProducer;
     }
+
     public String exportReport(String format) throws FileNotFoundException, JRException{
         List<Auth> authList = findAll();
         String path = "/Users/secilcakir/Desktop";
@@ -67,7 +76,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         return "path:"+path;
     }
 
-        @Transactional
+    @Transactional
     public String registerUser(RegisterUserRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
         if (!optionalAuth.isEmpty())
@@ -82,12 +91,13 @@ public class AuthService extends ServiceManager<Auth, Long> {
             //String token= jwtTokenProvider.createToken(optionalAuth.get().getAuthId()).get();
             // Balance oluşturmak için yapılan method
             saleManager.createBalance(auth.getAuthId());
+            registerMailProducer.sendActivationCode(IAuthMapper.INSTANCE.fromAuthToRegisterMailModel(auth));
         } else {
             throw new AuthManagerException(ErrorType.PASSWORD_ERROR);
         }
         return "Hesabınızı aktif edeceğiniz aktivasyon kodunuz: " + auth.getActivationCode();
     }
-    //TODO Metod test edilmedi.
+
     @Transactional
     public String registerSiteManager(RegisterUserRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
@@ -101,12 +111,16 @@ public class AuthService extends ServiceManager<Auth, Long> {
                 auth.setPassword(passwordEncoder.encode(dto.getPassword()));
                 auth.setActivationCode(CodeGenerator.generateCode());
                 save(auth);
+                userProfileManager.createSiteManager(IAuthMapper.INSTANCE.fromAuthNewCreateUserRequestDto(auth));
+                saleManager.createBalance(auth.getAuthId());
+                registerMailProducer.sendActivationCode(IAuthMapper.INSTANCE.fromAuthToRegisterMailModel(auth));
             }
         } else {
             throw new AuthManagerException(ErrorType.NOT_AUTHORIZED);
         }
         return "Hesabınızı aktif edeceğiniz aktivasyon kodunuz: " + auth.getActivationCode();
     }
+
     @Transactional
     public String activateStatus(ActivateRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
@@ -119,6 +133,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
         userProfileManager.activateStatus(optionalAuth.get().getAuthId());
         return "Hesabınız aktif edilmiştir";
     }
+
     @Transactional
     public LoginResponseDto login(LoginRequestDto dto) {
         Optional<Auth> auth = authRepository.findOptionalByEmail(dto.getEmail());
@@ -135,6 +150,7 @@ public class AuthService extends ServiceManager<Auth, Long> {
                 });
         return LoginResponseDto.builder().roles(roleList).token(token).build();
     }
+
     @Transactional
     public String forgotPassword(String email) {
         Optional<Auth> auth = authRepository.findOptionalByEmail(email);
@@ -143,11 +159,11 @@ public class AuthService extends ServiceManager<Auth, Long> {
         else if (!auth.get().getStatus().equals(EStatus.ACTIVE)) {
             throw new AuthManagerException(ErrorType.ACTIVATE_CODE_ERROR);
         }
-        String randomPassword = UUID.randomUUID().toString();
+        String randomPassword = UUID.randomUUID().toString().substring(0,12);
         auth.get().setPassword(passwordEncoder.encode(randomPassword));
         update(auth.get());
         userProfileManager.forgotPassword(IAuthMapper.INSTANCE.fromAuthToForgotPasswordUserRequestDto(auth.get()));
-        return "Yeni şifreniz: " + randomPassword + "/nLütfen en kısa sürede değiştiriniz.";
+        return "Yeni şifreniz: " + randomPassword + "\nLütfen en kısa sürede değiştiriniz.";
     }
 
     //UserService'den openfeign ile gelen metod

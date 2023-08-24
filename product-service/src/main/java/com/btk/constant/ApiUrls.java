@@ -19,5 +19,5 @@ public class ApiUrls {
     public static final String PRODUCT_SEARCH_WITH_PRICE = "/product-search-with-price";
     public static final String GET_PRICE_BY_PRODUCT_ID = "/get-by-product-id";
     public static final String FIND_PRODUCT_DESCRIPTIONS_BY_PRODUCT_ID = "/find-product-descriptions-by-product-id";
-
+    public static final String FIND_PRODUCT_LIST_WITH_DESCRIPTIONS_ACCORDING_TO_DATE ="/find-product-descriptions-according-to-dates";
 }

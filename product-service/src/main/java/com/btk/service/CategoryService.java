@@ -32,6 +32,7 @@ public class CategoryService extends ServiceManager<Category, String> {
         this.categoryRepository = categoryRepository;
         this.jwtTokenProvider = jwtTokenProvider;
     }
+
     @Transactional
     public Boolean save(String categoryName, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
@@ -46,8 +47,9 @@ public class CategoryService extends ServiceManager<Category, String> {
         });
         return true;
     }
+
     @Transactional
-    public Boolean updateCategory(CategoryUpdateRequestDto dto,String token) {
+    public Boolean updateCategory(CategoryUpdateRequestDto dto, String token) {
         List<String> roles = jwtTokenProvider.getRoleFromToken(token);
         roles.forEach(role -> {
             if (role.contains(ERole.ADMIN.toString())) {
@@ -68,7 +70,8 @@ public class CategoryService extends ServiceManager<Category, String> {
         return categoryRepository.existsById(categoryId);
     }
 
-    public Category getCategoryWithCategoryName(String categoryName){
+    public Category getCategoryWithCategoryName(String categoryName) {
+        System.out.println(categoryName);
         return categoryRepository.findCategoryByCategoryNameContainingIgnoreCase(categoryName).orElseThrow(() -> new ProductManagerException(ErrorType.CATEGORY_NOT_FOUND));
     }
 }

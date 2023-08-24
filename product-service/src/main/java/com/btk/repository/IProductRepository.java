@@ -21,5 +21,6 @@ public interface IProductRepository extends MongoRepository<Product, String> {
     List<Product> findByPriceGreaterThanEqual(Double minPrice);
     List<Product> findByPriceLessThanEqual(Double maxPrice);
     List<Product> findProductByPriceBetween(Double minPrice,Double maxPrice);
+    List<Product> findAllByCreatedDateBetween(Long date1,Long date2);
 
 }

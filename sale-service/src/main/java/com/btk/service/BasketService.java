@@ -69,10 +69,14 @@ public class BasketService extends ServiceManager<Basket, String> {
         if (roles.contains(ERole.USER.toString())) {
             String userId = userManager.findByAuthId(authId.get()).getBody();
             Optional<Basket> basket = basketRepository.findOptionalByUserId(userId);
-            List<GetProductDescriptionsFromProductServiceResponseDto> productDescriptions = basket.get().getProductIds().stream()
-                    .map(productId -> productManager.findDescriptionsByProductId(productId).getBody())
-                    .collect(Collectors.toList());
-            return productDescriptions;
+            if (basket.get().getStatus().equals(EStatus.ACTIVE)) {
+                List<GetProductDescriptionsFromProductServiceResponseDto> productDescriptions = basket.get().getProductIds().stream()
+                        .map(productId -> productManager.findDescriptionsByProductId(productId).getBody())
+                        .collect(Collectors.toList());
+                return productDescriptions;
+            } else {
+                throw new SaleManagerException(ErrorType.HAS_NOT_ACTIVE_BASKET);
+            }
         } else {
             throw new SaleManagerException(ErrorType.INVALID_ROLE);
         }
@@ -150,6 +154,12 @@ public class BasketService extends ServiceManager<Basket, String> {
         }
         return optionalBasket;
     }
-
+    public List<Basket> getHistoryBasketList(String userId){
+        Optional<List<Basket>> historyOfBasket= basketRepository.findAllByUserIdAndStatus(userId,EStatus.PASSIVE);
+        if (historyOfBasket.isEmpty()){
+            throw new SaleManagerException(ErrorType.HAS_NOT_PASSIVE_BASKET);
+        }
+        return historyOfBasket.get();
+    }
 
 }

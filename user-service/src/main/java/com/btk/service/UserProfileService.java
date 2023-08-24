@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserProfileService extends ServiceManager<UserProfile,String> {
+public class UserProfileService extends ServiceManager<UserProfile, String> {
     private final IUserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -48,6 +48,16 @@ public class UserProfileService extends ServiceManager<UserProfile,String> {
     }
 
     //AuthService'den openfeign ile gelen metod
+    public Boolean createSiteManager(NewCreateUserResponseDto dto) {
+        UserProfile userProfile = IUserProfileMapper.INSTANCE.fromNewCreateUserResponseDtoToUserProfile(dto);
+        List<ERole> roles = new ArrayList<>();
+        roles.add(ERole.SITE_MANAGER);
+        userProfile.setRole(roles);
+        save(userProfile);
+        return true;
+    }
+
+    //AuthService'den openfeign ile gelen metod
     public Boolean activateStatus(Long authId) {
         Optional<UserProfile> userProfile = userRepository.findByAuthId(authId);
         if (userProfile.isEmpty())
@@ -60,16 +70,17 @@ public class UserProfileService extends ServiceManager<UserProfile,String> {
     //AuthService'den openfeign ile gelen metod
     public Boolean forgotPassword(ForgotPasswordUserResponseDto dto) {
         Optional<UserProfile> optionalUserProfile = userRepository.findByAuthId(dto.getAuthId());
-        if(optionalUserProfile.isEmpty())
+        if (optionalUserProfile.isEmpty())
             throw new UserProfileManagerException(ErrorType.USER_NOT_FOUND);
         optionalUserProfile.get().setPassword(dto.getPassword());
         update(optionalUserProfile.get());
         return true;
     }
+
     @Transactional
     public String changePassword(UserChangePasswordRequestDto dto) {
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(dto.getToken());
-        if (authId.isEmpty()){
+        if (authId.isEmpty()) {
             throw new UserProfileManagerException(ErrorType.INVALID_TOKEN);
         }
         Optional<UserProfile> userProfile = userRepository.findByAuthId(authId.get());
@@ -82,7 +93,7 @@ public class UserProfileService extends ServiceManager<UserProfile,String> {
             } else {
                 throw new UserProfileManagerException(ErrorType.PASSWORD_ERROR);
             }
-        }else {
+        } else {
             throw new UserProfileManagerException(ErrorType.USER_NOT_FOUND);
         }
         return dto.getNewPassword();
@@ -91,5 +102,6 @@ public class UserProfileService extends ServiceManager<UserProfile,String> {
     public String findByAuthId(Long authId) {
         return userRepository.findByAuthId(authId).get().getUserId();
     }
+
 
 }

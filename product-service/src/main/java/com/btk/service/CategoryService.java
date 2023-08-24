@@ -64,6 +64,7 @@ public class CategoryService extends ServiceManager<Category, String> {
     }
 
     public Category getCategoryWithCategoryName(String categoryName) {
+        System.out.println(categoryName);
         return categoryRepository.findCategoryByCategoryNameContainingIgnoreCase(categoryName).orElseThrow(() -> new ProductManagerException(ErrorType.CATEGORY_NOT_FOUND));
     }
 }

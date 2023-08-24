@@ -26,6 +26,11 @@ public class UserProfileController {
     public ResponseEntity<Boolean> createVisitorUser(@RequestBody NewCreateUserResponseDto dto) {
         return ResponseEntity.ok(userProfileService.createUser(dto));
     }
+    @Hidden
+    @PostMapping("/create-site-manager")
+    public ResponseEntity<Boolean> createSiteManager(@RequestBody NewCreateUserResponseDto dto) {
+        return ResponseEntity.ok(userProfileService.createSiteManager(dto));
+    }
 
     @Hidden
     @PutMapping(ACTIVATE_STATUS + "/{authId}")

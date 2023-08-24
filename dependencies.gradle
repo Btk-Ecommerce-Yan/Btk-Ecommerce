@@ -27,6 +27,9 @@ ext {
             springOpenFeign             : "org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
             //RabbitMQ
             springBootRabbitMQ          : "org.springframework.boot:spring-boot-starter-amqp:$versions.springBoot",
+
+            springCloudConfigClient     : "org.springframework.cloud:spring-cloud-config-client:$versions.springCloud",
+            springBootMailSender        : "org.springframework.boot:spring-boot-starter-mail:$versions.springBoot",
     ]
 
 }

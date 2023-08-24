@@ -1,22 +1,8 @@
-server:
-  port: 8085
-
 spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: java
-    password: root
-  mail:
-    username: ekazanci97@gmail.com
-    password: tildzxcejldbzmat
-    host: smtp.gmail.com
-    port: 587
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-rabbitmq:
-  registerMailQueue: mail-queue
+  cloud:
+    config:
+      uri: http://localhost:8888
+  config:
+    import: "configserver:"
+  application:
+    name: mail-service-application

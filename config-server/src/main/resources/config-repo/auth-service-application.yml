@@ -20,3 +20,7 @@ spring:
     username: java
     password: root
 
+rabbitmq:
+  exchange-auth: auth-exchange
+  registerMailQueue: mail-queue
+  registerMailBindingKey: mail-key

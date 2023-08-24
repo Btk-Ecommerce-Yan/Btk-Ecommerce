@@ -69,10 +69,6 @@ public class AuthService extends ServiceManager<Auth, Long> {
             JasperExportManager.exportReportToHtmlFile(jasperPrint, path +"//auth.html");
 
         }
-        if (format .equalsIgnoreCase("pdf")){
-
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path +"//auth.pdf");
-        }
         return "path:"+path;
     }
 

@@ -25,6 +25,7 @@ public class BalanceService extends ServiceManager<Balance, String> {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userManager = userManager;
     }
+
     @Transactional
     public Boolean createBalance(Long authId) {
         String userId = userManager.findByAuthId(authId).getBody();
@@ -34,6 +35,7 @@ public class BalanceService extends ServiceManager<Balance, String> {
 
 //        throw new SaleManagerException(ErrorType.BALANCE_EXIST_ERROR);
     }
+
     @Transactional
     public AddBalanceResponseDto addBalance(Double amountOfBalance, String token) {
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);

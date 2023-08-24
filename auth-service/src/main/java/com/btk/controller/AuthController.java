@@ -46,7 +46,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(dto));
     }
 
-    @PutMapping(FORGOT_PASSWORD)
+    @PutMapping(FORGOT_PASSWORD + "/{email}")
     @Operation(summary = "Kullanıcı şifresini unuttuğunda kullanacağı şifre değiştirebilmesi.")
     public ResponseEntity<String> forgotPassword(@PathVariable @Valid String email) {
         return ResponseEntity.ok(authService.forgotPassword(email));

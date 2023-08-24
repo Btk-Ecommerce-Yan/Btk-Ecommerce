@@ -31,6 +31,7 @@ public enum ErrorType {
     HAS_NOT_ACTIVE_BASKET(5800,"Aktif sepetiniz bulunmamaktadır",HttpStatus.BAD_REQUEST),
     HAS_NOT_PASSIVE_BASKET(5800,"Sepet geçmişi bulunmamaktadır",HttpStatus.BAD_REQUEST),
     INSUFFICIENT_BALANCE (5900,"Yetersiz bakiye",HttpStatus.BAD_REQUEST),
+
     ;
 
 

@@ -48,6 +48,16 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
     }
 
     //AuthService'den openfeign ile gelen metod
+    public Boolean createSiteManager(NewCreateUserResponseDto dto) {
+        UserProfile userProfile = IUserProfileMapper.INSTANCE.fromNewCreateUserResponseDtoToUserProfile(dto);
+        List<ERole> roles = new ArrayList<>();
+        roles.add(ERole.SITE_MANAGER);
+        userProfile.setRole(roles);
+        save(userProfile);
+        return true;
+    }
+
+    //AuthService'den openfeign ile gelen metod
     public Boolean activateStatus(Long authId) {
         Optional<UserProfile> userProfile = userRepository.findByAuthId(authId);
         if (userProfile.isEmpty())
@@ -92,5 +102,6 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
     public String findByAuthId(Long authId) {
         return userRepository.findByAuthId(authId).get().getUserId();
     }
+
 
 }

@@ -51,9 +51,7 @@ public class OrderService extends ServiceManager<Order, String> {
     }
 
 
-    // TODO : PRODUCTLARIN TOPLAM FİYATLARI İÇİN METOT ÇAĞIRILACAK VE ONA GÖRE ONAYLANIP KONTROL EDİLECEK
     @Transactional
-
     public String createOrder(String balanceId, String token) {
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         String userId = userManager.findByAuthId(authId.get()).getBody();
@@ -118,9 +116,8 @@ public class OrderService extends ServiceManager<Order, String> {
             Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
             String userId = userManager.findByAuthId(authId.get()).getBody();
             List<String> roles = jwtTokenProvider.getRoleFromToken(token);
-            List<String> productIdList = new ArrayList<>();
             List<GetProductDescriptionsFromProductServiceResponseDto> filteredProductList = new ArrayList<>();
-            //üşendiğimiz için sorguyu değiştirmek yerine gelen basket verileri içindn filtreleme yaptık
+            //değiştirmek yerine gelen basket verileri içindn filtreleme yaptık
             List<Basket> historyBasketList = basketService.getHistoryBasketList(userId);
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -133,9 +130,7 @@ public class OrderService extends ServiceManager<Order, String> {
             } else {
                 List<Basket> filteredBaskets = historyBasketList.stream()
                         .filter(basket -> {
-                            // Burada basket nesnesinden tarih bilgisini alarak,
-                            // tarihin belirli bir aralığın içinde olup olmadığını kontrol edebilirsiniz.
-                            Long basketDate = basket.getUpdatedDate(); // Örnek olarak basket nesnesinin getDate() metoduyla alındığını varsayalım.
+                            Long basketDate = basket.getUpdatedDate();
                             return basketDate >= firstDateInLong && basketDate <= secondDateInLong;
                         })
                         .collect(Collectors.toList());

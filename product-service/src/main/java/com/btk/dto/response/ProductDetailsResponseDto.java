@@ -16,7 +16,6 @@ public class ProductDetailsResponseDto {
     private List<String> categoryName;
     private String brandName;
     private Double price;
-    private String stock;
     private List<String> photoImages;
     private String description;
 }

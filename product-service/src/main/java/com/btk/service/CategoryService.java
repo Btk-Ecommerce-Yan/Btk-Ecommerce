@@ -64,14 +64,11 @@ public class CategoryService extends ServiceManager<Category, String> {
         return true;
     }
 
-    //TODO kategori silme işlemi yapılacak
-
     public Boolean existByCategoryId(String categoryId) {
         return categoryRepository.existsById(categoryId);
     }
 
-    public Category getCategoryWithCategoryName(String categoryName) {
-        System.out.println(categoryName);
-        return categoryRepository.findCategoryByCategoryNameContainingIgnoreCase(categoryName).orElseThrow(() -> new ProductManagerException(ErrorType.CATEGORY_NOT_FOUND));
+    public List<Category> getCategoriesWithCategoryName(String categoryName) {
+        return categoryRepository.findCategoriesByCategoryNameContainsIgnoreCase(categoryName);
     }
 }

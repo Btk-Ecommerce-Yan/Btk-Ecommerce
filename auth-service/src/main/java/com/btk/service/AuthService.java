@@ -143,7 +143,6 @@ public class AuthService extends ServiceManager<Auth, Long> {
             throw new AuthManagerException(ErrorType.ACTIVATE_CODE_ERROR);
         }
         List<String> roleList = auth.get().getRoles().stream().map(x -> x.toString()).collect(Collectors.toList());
-        System.out.println(roleList);
         String token = jwtTokenProvider.createToken(auth.get().getAuthId(), roleList)
                 .orElseThrow(() -> {
                     throw new AuthManagerException(ErrorType.TOKEN_NOT_CREATED);

@@ -13,14 +13,9 @@ import com.btk.mapper.IProductMapper;
 import com.btk.repository.IProductRepository;
 import com.btk.utility.JwtTokenProvider;
 import com.btk.utility.ServiceManager;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -105,7 +100,6 @@ public class ProductService extends ServiceManager<Product, String> {
                 .categoryName(categoryNames)
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .stock(product.getStock())
                 .photoImages(product.getPhotoImages())
                 .build();
         return productDetailsResponseDto;
@@ -113,20 +107,21 @@ public class ProductService extends ServiceManager<Product, String> {
 
     @Transactional(readOnly = true)
     public List<SearchProductResponseDto> searchProductWithCategoryName(String categoryName) {
-        Category category = categoryService.getCategoryWithCategoryName(categoryName);
-        System.out.println(categoryName);
-        List<Product> products = productRepository.findProductByCategoryIdsContains(category.getCategoryId());
-        System.out.println(products);
-        List<SearchProductResponseDto> searchProductResponseDto = products.stream().map(product -> {
-            SearchProductResponseDto dto = SearchProductResponseDto.builder()
-                    .productName(product.getProductName())
-                    .photoImages(product.getPhotoImages())
-                    .price(product.getPrice())
-                    .build();
-            return dto;
-        }).collect(Collectors.toList());
-        System.out.println(searchProductResponseDto);
-        return searchProductResponseDto;
+        List<Category> categories = categoryService.getCategoriesWithCategoryName(categoryName);
+
+        List<String> categoryIds = categories.stream()
+                .map(Category::getCategoryId)
+                .collect(Collectors.toList());
+        List<Product> products = productRepository.findProductByCategoryIdsContainsIgnoreCase(categoryIds);
+        List<SearchProductResponseDto> searchProductResponseDtoList = products.stream()
+                .map(product -> SearchProductResponseDto.builder()
+                        .productName(product.getProductName())
+                        .photoImages(product.getPhotoImages())
+                        .price(product.getPrice())
+                        .build())
+                .collect(Collectors.toList());
+
+        return searchProductResponseDtoList;
     }
 
     //sale modülünden basket servisinin open feigni için yazıldı
@@ -177,7 +172,7 @@ public class ProductService extends ServiceManager<Product, String> {
         List<Product> filteredProductList = productRepository.findAllByCreatedDateBetween(date1,date2);
         List<GetProductDescriptionsFromProductServiceResponseDto> filteredGetProductDescriptionList=
                 IProductMapper.INSTANCE.toListGetProductsDescriptionFromProductList(filteredProductList);
-        System.out.println(filteredGetProductDescriptionList);
+
         return filteredGetProductDescriptionList;
     }
 }

@@ -40,16 +40,14 @@ public class BalanceService extends ServiceManager<Balance, String> {
     public AddBalanceResponseDto addBalance(Double amountOfBalance, String token) {
         Optional<Long> authId = jwtTokenProvider.getIdFromToken(token);
         String userId = userManager.findByAuthId(authId.get()).getBody();
-        System.out.println(userId);
         Optional<Balance> optionalBalance = balanceRepository.findByUserId(userId);
-        System.out.println(optionalBalance);
         if (!optionalBalance.isEmpty()) {
             Double balance = optionalBalance.get().getAmountOfBalance();
             optionalBalance.get().setAmountOfBalance(amountOfBalance + balance);
             update(optionalBalance.get());
             return IBalanceMapper.INSTANCE.balanceToAddBalanceResponseDto(optionalBalance.get());
         } else {
-            throw new RuntimeException("Böyle bir balance bulunamadı");
+            throw new RuntimeException("Cüzdan hesabı bulunamadı.");
         }
 
     }
